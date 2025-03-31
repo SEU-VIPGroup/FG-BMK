@@ -1,0 +1,4 @@
+benchmark/human-oriented/knowledge_bias_estimination/cub/questions_true_false_all_class.jsonl filter=lfs diff=lfs merge=lfs -text
+benchmark/human-oriented/knowledge_bias_estimination/flowers102/questions_true_false_all_class.jsonl filter=lfs diff=lfs merge=lfs -text
+benchmark/human-oriented/knowledge_bias_estimination/stanforddog/questions_true_false_all_class.jsonl filter=lfs diff=lfs merge=lfs -text
+benchmark/machine-oriented/iNat2021/train.csv filter=lfs diff=lfs merge=lfs -text
