@@ -26,7 +26,7 @@ def eval_blip2(args):
     # choose device
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    # 加载 BLIP-2 模型及预处理
+    # load BLIP-2 and preprocess
     # This is the default setting, can choose to control temperature or seed
     model, vis_processors, _ = load_model_and_preprocess(
         name="blip2_t5", model_type="pretrain_flant5xl", is_eval=True, device=device
