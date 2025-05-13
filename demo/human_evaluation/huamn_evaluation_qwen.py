@@ -22,6 +22,7 @@ import re
 
 def eval_qwen(args):
     # Load Qwen model and tokenizer
+    # This is the default setting, can choose to control temperature or seed
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(args.model_path, device_map="cuda", trust_remote_code=True).eval()
 

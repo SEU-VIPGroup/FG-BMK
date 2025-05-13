@@ -22,6 +22,7 @@ def get_chunk(lst, n, k):
 
 def eval_internvl(args):
     # Load InternVL model, tokenizer, and image processor
+    # This is the default setting, can choose to control temperature or seed
     model = AutoModel.from_pretrained(
         args.model_path,
         torch_dtype=torch.bfloat16,

@@ -23,46 +23,47 @@ def get_chunk(lst, n, k):
 
 
 def eval_blip2(args):
-    # 选择设备（支持多 GPU）
+    # choose device
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     # 加载 BLIP-2 模型及预处理
+    # This is the default setting, can choose to control temperature or seed
     model, vis_processors, _ = load_model_and_preprocess(
         name="blip2_t5", model_type="pretrain_flant5xl", is_eval=True, device=device
     )
 
     model = model.to(device)
 
-    # 读取 JSONL 文件
+    # load JSONL file
     with open(args.question_file, "r") as f:
         questions = [json.loads(line.strip()) for line in f if line.strip()]
 
-    # 划分数据集，支持多进程处理
+    # Split data into chunks for distributed processing
     chunk_questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
 
-    # 创建输出目录
+    # Create output directory if it doesn't exist
     os.makedirs(os.path.dirname(args.answers_file), exist_ok=True)
 
-    # 处理并写入输出文件
+    # Open the output file
     with open(args.answers_file, "w") as ans_file:
         for question in tqdm(chunk_questions, total=len(chunk_questions)):
             image_file = question["image"]
             prompt_text = question["text"]
             class_name = question.get("class", "")
 
-            # 读取并处理图片
+            # load and process image
             image_path = os.path.join(args.image_folder, image_file)
             raw_image = Image.open(image_path).convert("RGB")
             image = vis_processors["eval"](raw_image).unsqueeze(0).to(device)
 
-            # 生成回答
+            # generate answer
             with torch.no_grad():
                 generated_text = model.generate({"image": image, "prompt": prompt_text})
 
-            # 清理输出文本
+            # clean output
             response_cleaned = generated_text[0].strip()
 
-            # 写入 JSONL 文件
+            # Write output in desired format
             ans_file.write(json.dumps({
                 "question_id": question["question_id"],
                 "image": image_file,
