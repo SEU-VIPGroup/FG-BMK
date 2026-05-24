@@ -1,0 +1,54 @@
+{
+    "humanOriented": [
+        {
+            "id": "h1",
+            "title": "Fine-Grained Category Boundaries",
+            "summary": "LVLMs struggle to distinguish excessively fine-grained categories.",
+            "detail": "Taking InternVL3 as an example, at the class level, the model achieves 99.76% accuracy on multiple-choice questions and 99.77% on true/false questions. However, as the granularity narrows to the genus level, accuracy drops to 90.75%. When further refined to the species level, accuracy drops further to 62.48% on true/false questions and 61.18% on multiple-choice questions, demonstrating that the model struggles to distinguish between closely related species."
+        },
+        {
+            "id": "h2",
+            "title": "Attribute Recognition Limitations",
+            "summary": "LVLMs exhibit significant room for improvement in recognizing fine-grained attributes.",
+            "detail": "LVLMs exhibit relatively stronger recognition abilities for attributes like pattern, size, and length. For example, InternVL3 and Qwen2.5-VL achieve 50.13% and 45.12% average accuracy for pattern recognition, but only 30.95% and 29.30% for shape recognition. Notably, only a few attributes achieved an accuracy above 70%, and several scored as low as 10%."
+        },
+        {
+            "id": "h3",
+            "title": "Knowledge Bias Across Fine-Grained Categories",
+            "summary": "LVLMs show inconsistent recognition accuracy across fine-grained categories, revealing substantial knowledge bias.",
+            "detail": "Using LLaVA as an example, the model demonstrates highly inconsistent recognition abilities, achieving nearly 90% accuracy for some fine-grained categories while dropping to approximately 30% for others. Fine-tuning LLaVA on occurrence-balanced datasets shows consistently strong recognition ability, suggesting that the knowledge bias is primarily caused by the uneven representation of fine-grained knowledge in training data."
+        },
+        {
+            "id": "h4",
+            "title": "Fine-Grained Tailored Models Remain Stronger",
+            "summary": "LVLMs do not outperform fine-grained tailored models in fine-grained tasks.",
+            "detail": "While LVLMs demonstrate notable performance in fine-grained recognition, their accuracy—whether in short-answer questions or using the linear classifier method—falls short of that achieved by fine-grained tailored models. This disparity may stem from the fact that LVLMs are primarily optimized for general tasks, with less emphasis placed on fine-grained domain capabilities (e.g., CAP uses context-aware attentional pooling, leading to a 1.53% improvement)."
+        }
+    ],
+    "machineOriented": [
+        {
+            "id": "m1",
+            "title": "Training Paradigm",
+            "summary": "The contrastive training paradigm in LVLMs effectively enhances the fine-grained discriminability of visual features.",
+            "detail": "Vision encoders trained with contrastive paradigms (e.g., EVA-CLIP, InternVL, DINOv2) outperform those trained with reconstruction (BEiT3) and generative paradigms (Qwen). In multi meta-category classification, EVA-CLIP maintains high accuracy with an average drop of just 1.96% compared to the single-category setting, while Qwen and BEiT3 show larger drops of 4.16% and 7.41%, respectively."
+        },
+        {
+            "id": "m2",
+            "title": "Visual-Text Alignment",
+            "summary": "The alignment strategy in LVLMs might impair the fine-grained discriminability of visual features.",
+            "detail": "Original visual features demonstrate superior classification performance, outperforming the aligned ones by an average of 3.39%. This decline can be attributed to distortions introduced by aligning visual and textual features, and more importantly, to granularity inconsistencies in LVLMs' alignment data—where fine-grained objects in images are paired with coarse-grained textual descriptions."
+        },
+        {
+            "id": "m3",
+            "title": "Scaling Effects",
+            "summary": "Larger vision encoder size or larger scale of web data provides limited improvement in the fine-grained discriminability of visual features.",
+            "detail": "Increasing the size of DINOv2's vision encoder from DINOv2-B to DINOv2-L results in only a 0.6% improvement in average classification accuracy, while further increasing to DINOv2-G leads to just a 0.3% improvement. Furthermore, simply increasing the scale of training data, without considering its quality, offers limited improvement in fine-grained discriminability."
+        },
+        {
+            "id": "m4",
+            "title": "Robustness to Perturbations",
+            "summary": "Visual features in LVLMs are more susceptible to perturbations in fine-grained tasks.",
+            "detail": "Perturbing the visual features of EVA-CLIP causes a significant drop in classification accuracy on the fine-grained dataset CUB-200-2011 (from 88.95% to 24.94%). In contrast, on the generic dataset CIFAR-100, the accuracy declines more modestly (from 93.05% to 50.76%). This vulnerability is attributed to coarse-grained, noisy training data limiting feature discriminability."
+        }
+    ]
+}

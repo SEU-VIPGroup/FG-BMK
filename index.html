@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <!-- TODO: Replace with your paper title and author names -->
+  <meta name="title"
+    content="Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation">
+  <!-- TODO: Write a compelling 150-160 character description of your research -->
+  <meta name="description"
+    content="`FG-BMK evaluates MLLMs on fine-grained visual recognition, revealing a significant alignment gap between strong visual perception and poor language articulation.`">
+  <!-- TODO: Add 5-10 relevant keywords for your research area -->
+  <meta name="keywords"
+    content=" Fine-Grained Visual Recognition, Multimodal Large Language Models, Benchmark, Alignment Gap,machine learning, computer vision, AI">
+  <!-- TODO: List all authors -->
+  <meta name="author" content="Hong-Tao Yu, Chen-Wei Xie, Yuxin Peng, Serge Belongie, Xiu-Shen Wei">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <!-- TODO: Replace with your institution or lab name -->
+  <meta property="og:site_name"
+    content="FG-BMK — Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks">
+  <!-- TODO: Same as paper title above -->
+  <meta property="og:title"
+    content="Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation">
+  <!-- TODO: Same as description above -->
+  <meta property="og:description"
+    content="FG-BMK evaluates MLLMs on fine-grained visual recognition, revealing a significant alignment gap between strong visual perception and poor language articulation.">
+  <!-- 网页的真实链接 -->
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE">
+
+  <!-- TODO: Create a 1200x630px preview image and update path -->
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FG-BMK: A Fine-Grained Vision Benchmark for Multimodal Alignment Gap ">
+  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
+  <meta property="article:author" content="Hong-Tao Yu, Chen-Wei Xie, Yuxin Peng, Serge Belongie, Xiu-Shen Wei">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="Fine-Grained Visual Recognition">
+  <meta property="article:tag" content="Multimodal Large Language Models">
+  <meta property="article:tag" content="Benchmark">
+  <meta property="article:tag" content="Alignment Gap">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title"
+    content="Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation">
+  <meta name="citation_author" content="Yu, Hong-Tao">
+  <meta name="citation_author" content="Xie, Chen-Wei">
+  <meta name="citation_author" content="Peng, Yuxin">
+  <meta name="citation_author" content="Belongie, Serge">
+  <meta name="citation_author" content="Wei, Xiu-Shen">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="International Conference on Learning Representations (ICLR)">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2504.14988.pdf">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>FG-BMK</title>
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/benchmark.svg">
+  <link rel="apple-touch-icon" href="static/images/benchmark.svg">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700;8..60,800&display=swap" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script defer src="static/js/index.js?v=3"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation",
+    "description": "FG-BMK evaluates MLLMs on fine-grained visual recognition, revealing a significant alignment gap between strong visual perception and poor language articulation.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Hong-Tao Yu"
+      },
+      {
+        "@type": "Person",
+        "name": "Chen-Wei Xie"
+      },
+      {
+        "@type": "Person",
+        "name": "Yuxin Peng"
+      },
+      {
+        "@type": "Person",
+        "name": "Serge Belongie"
+      },
+      {
+        "@type": "Person",
+        "name": "Xiu-Shen Wei"
+      }
+    ],
+    "datePublished": "2025-04-14",
+    "publisher": {
+      "@type": "Organization",
+      "name": "arXiv"
+    },
+    "url": "https://arxiv.org/abs/2504.14988",
+    "image": "https://your-domain.com/static/images/social_preview.png",
+    "keywords": ["Fine-Grained Visual Recognition", "Multimodal Large Language Models", "Benchmark", "Alignment Gap"],
+    "abstract": "Recent advancements in Large Vision-Language Models (LVLMs) have demonstrated remarkable multimodal perception capabilities, garnering significant attention. While numerous evaluation studies have emerged, assessing LVLMs both holistically and on specialized tasks, fine-grained image tasks—fundamental to computer vision—remain largely unexplored. To fill this gap, we introduce a comprehensive fine-grained evaluation benchmark, i.e., FG-BMK, comprising 1.01 million questions and 0.33 million images.",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/"
+  }
+  </script>
+
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SEU-VIPGroup",
+    "url": "https://github.com/SEU-VIPGroup/FG-BMK",
+    "sameAs": [
+      "https://github.com/SEU-VIPGroup"
+    ]
+  }
+  </script>
+  <!-- Dataset Styles -->
+  <style>
+    .ds-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .ds-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .ds-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px 18px;
+      border: 1px solid #f3f4f6;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      transition: all 0.3s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ds-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 0 0 12px 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .ds-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+      border-color: #e5e7eb;
+    }
+
+    .ds-card:hover::after {
+      opacity: 1;
+    }
+
+    .ds-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .ds-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.3;
+    }
+
+    .ds-link-icon {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      transition: color 0.2s;
+    }
+
+    .ds-card:hover .ds-link-icon {
+      color: #4f46e5;
+    }
+
+    /* Domain colors */
+    .ds-animals .ds-pill {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .ds-animals::after {
+      background: #3b82f6;
+    }
+
+    .ds-plants .ds-pill {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .ds-plants::after {
+      background: #22c55e;
+    }
+
+    .ds-consumer .ds-pill {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .ds-consumer::after {
+      background: #f59e0b;
+    }
+
+    .ds-vehicles .ds-pill {
+      background: #ffe4e6;
+      color: #be123c;
+    }
+
+    .ds-vehicles::after {
+      background: #f43f5e;
+    }
+
+    .ds-medical .ds-pill {
+      background: #f3e8ff;
+      color: #7e22ce;
+    }
+
+    .ds-medical::after {
+      background: #a855f7;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- Sticky Top Navigation Bar -->
+  <nav class="navbar is-fixed-top nav-blur" role="navigation" aria-label="main navigation">
+    <div class="container is-max-widescreen is-flex is-justify-content-center">
+      <div id="navbarContent" class="is-flex is-align-items-center" style="gap: 2rem; height: 3.25rem;">
+        <a class="nav-link-refined outline-none focus:outline-none" href="#abstract">Abstract</a>
+        <a class="nav-link-refined outline-none focus:outline-none" href="#leaderboard">Leaderboard</a>
+        <a class="nav-link-refined outline-none focus:outline-none" href="#key-findings">Key Findings</a>
+        <a class="nav-link-refined outline-none focus:outline-none" href="#dataset">Dataset</a>
+        <a class="nav-link-refined outline-none focus:outline-none" href="#results">Results</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+
+
+  <main id="main-content">
+    <section class="hero pb-0" style="padding-top: 50px;">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <!-- TODO: Replace with your paper title -->
+              <h1 class="title is-1 publication-title"
+                style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <img src="static/images/benchmark.svg" alt="Logo" style="width: 1em;">
+                FG-BMK
+              </h1>
+              <!-- Subtitle -->
+              <h2 class="title is-3 publication-title"
+                style="font-weight: 500; color: #374151; max-width: 900px; margin: 0 auto; line-height: 1.4;">
+                Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation
+              </h2>
+
+              <div class="is-size-5 publication-authors" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">
+                <span class="author-block">
+                  <a href="https://github.com/SEU-VIPGroup" target="_blank">Hong-Tao Yu</a><sup>1</sup>,</span>
+                <span class="author-block">
+                  Chen-Wei Xie<sup>2</sup>,</span>
+                <span class="author-block">
+                  Yuxin Peng<sup>3</sup>,</span>
+                <span class="author-block">
+                  Serge Belongie<sup>4</sup>,</span>
+                <span class="author-block">
+                  <a href="http://www.weixiushen.com" target="_blank">Xiu-Shen Wei</a><sup>1†</sup></span>
+              </div>
+
+              <div class="is-size-6 publication-authors" style="line-height: 1.6;">
+                <span class="author-block"><sup>1</sup>School of Computer Science and Engineering, School of Intelligence Science and Engineering, and Key Laboratory of New Generation Artificial Intelligence Technology and Its Interdisciplinary Applications, Southeast University, China</span><br>
+                <span class="author-block"><sup>2</sup>Alibaba Group</span>
+                <span class="author-block"><sup>3</sup>Wangxuan Institute of Computer Technology, Peking University,
+                  China</span><br>
+                <span class="author-block"><sup>4</sup>University of Copenhagen, Denmark</span><br>
+                <span class="eql-cntrb"><small><br><sup>†</sup>Corresponding Author</small></span>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <!-- TODO: Update with your arXiv paper ID -->
+                  <span class="link-block">
+                    <a href="https://arxiv.org/abs/2504.14988" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                      </span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="#dataset" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-database"></i>
+                      </span>
+                      <span>Dataset</span>
+                    </a>
+                  </span>
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <span class="link-block">
+                    <a href="https://github.com/SEU-VIPGroup/FG-BMK" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+
+
+                  <span class="link-block">
+                    <a href="#leaderboard" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-trophy"></i>
+                      </span>
+                      <span>Leaderboard</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Highlights Dashboard (Hero Teaser Replacement) -->
+      <section class="hero teaser" style="margin-top: -30px; margin-bottom: 20px;">
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <div class="columns is-multiline is-centered is-variable is-6">
+              <!-- Scale Card -->
+              <div class="column is-one-third is-flex">
+                <div class="abstract-box feature-card is-flex-grow-1"
+                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px !important; width: 100%; height: 100%;">
+
+                  <!-- Icon Zone -->
+                  <div
+                    style="height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                    <i class="fas fa-database" style="font-size: 2.2rem; color: #4f46e5;"></i>
+                  </div>
+
+                  <!-- Title Zone -->
+                  <div
+                    style="height: 4.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                    <h3 class="title is-5" style="margin: 0;">Massive Scale</h3>
+                  </div>
+
+                  <!-- Content Zone -->
+                  <div class="is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-center"
+                    style="width: 100%;">
+                    <p style="font-size: 1.05rem; color: #4f46e5; font-weight: 800; line-height: 1.4;">1.01M+ Questions
+                    </p>
+                    <p style="font-size: 1.05rem; color: #4f46e5; font-weight: 800; line-height: 1.4;">280K+ Images</p>
+                    <p style="font-size: 1.05rem; color: #4f46e5; font-weight: 800; line-height: 1.4;">13 Data Source
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dual Evaluation Card -->
+              <div class="column is-one-third is-flex">
+                <div class="abstract-box feature-card is-flex-grow-1"
+                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px !important; width: 100%; height: 100%;">
+
+                  <!-- Icon Zone -->
+                  <div
+                    style="height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                    <i class="fas fa-balance-scale" style="font-size: 2.2rem; color: #10b981;"></i>
+                  </div>
+
+                  <!-- Title Zone -->
+                  <div
+                    style="height: 4.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                    <h3 class="title is-5" style="margin: 0;">Dual Evaluation</h3>
+                  </div>
+
+                  <!-- Content Zone -->
+                  <div class="is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-center"
+                    style="width: 100%;">
+                    <p style="font-size: 0.95rem; color: #64748b; line-height: 1.6;">
+                      <b>Human-oriented:</b><br>Dialogue-based Understanding
+                    </p>
+                    <p style="font-size: 0.95rem; color: #64748b; line-height: 1.6;"><b>Machine-oriented:</b><br>Feature
+                      Representation</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Diverse Tasks Card -->
+              <div class="column is-one-third is-flex">
+                <div class="abstract-box feature-card is-flex-grow-1"
+                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px !important; width: 100%; height: 100%;">
+
+                  <!-- Icon Zone -->
+                  <div
+                    style="height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                    <i class="fas fa-microscope" style="font-size: 2.2rem; color: #f59e0b;"></i>
+                  </div>
+
+                  <!-- Title Zone -->
+                  <div
+                    style="height: 4.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                    <h3 class="title is-5" style="margin: 0;">Diverse Fine-Grained Tasks</h3>
+                  </div>
+
+                  <!-- Content Zone -->
+                  <div class="is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-center"
+                    style="width: 100%;">
+                    <p style="font-size: 0.9rem; color: #64748b; line-height: 1.6; margin-bottom: 0;">
+                      Attribute Recognition · Knowledge Bias<br>
+                      Hierarchical Granularity · Image Retrieval<br>
+                      Image Classification
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h2 class="subtitle has-text-centered mt-5" style="font-size: 1.1rem; font-style: italic;">
+              "A comprehensive benchmark revealing LVLMs' limitations on <b>fine-grained</b> visual tasks."
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      <!-- Paper abstract -->
+      <section class="section" id="abstract">
+        <div class="container is-max-desktop">
+          <div class="abstract-box">
+            <h2 class="title is-3 has-text-centered">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Recent advancements in Large Vision-Language Models (LVLMs) have demonstrated remarkable multimodal
+                perception capabilities. However, while numerous evaluation studies have emerged, <strong> fine-grained
+                  image tasks</strong>—fundamental to computer vision—remain largely unexplored.
+                To fill this gap, we introduce a comprehensive fine-grained evaluation benchmark,
+                <strong>FG-BMK</strong>,
+                comprising <strong> 1.01 million questions</strong> and <strong>0.28 million images</strong>. Our
+                evaluation systematically examines LVLMs from both human-oriented (semantic recognition) and
+                machine-oriented (feature representation) perspectives.
+                Through extensive experiments on twelve representative LVLMs/VLMs, this work provides critical insights
+                into the limitations of current models and offers guidance for future data construction and architecture
+                design.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End paper abstract -->
+
+      <!-- Core Evaluation Results -->
+      <section class="section" id="leaderboard">
+        <div class="container is-max-widescreen">
+          <h2 class="title is-3 has-text-centered" style="margin-bottom: 0.5rem;">Leaderboard</h2>
+          <p class="has-text-centered" id="leaderboard-footnote"
+            style="color: #64748b; margin-bottom: 2.5rem; font-size: 1.1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+            Accuracy performance on the Attribute Recognition task within the human-oriented evaluation.
+          </p>
+
+          <div class="evaluation-tabs-container">
+            <!-- Pill-shaped Tabs -->
+            <div class="evaluation-tabs">
+              <button class="eval-tab is-active" onclick="switchTab(event, 'tab-attribute')">Human: Attribute</button>
+              <button class="eval-tab" onclick="switchTab(event, 'tab-hierarchical')">Human: Hierarchical</button>
+              <button class="eval-tab" onclick="switchTab(event, 'tab-classification')">Machine:
+                Classification</button>
+              <button class="eval-tab" onclick="switchTab(event, 'tab-retrieval')">Machine: Retrieval</button>
+            </div>
+
+            <!-- Tab 1: Machine-Oriented (Classification) -->
+            <div id="tab-classification" class="tab-content">
+              <div class="evaluation-card table-wrapper-scrollable" id="classification-table-wrapper">
+                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
+                  id="table-classification">
+                  <thead id="classification-thead">
+                    <!-- Dynamic Headers -->
+                  </thead>
+                  <tbody id="classification-tbody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab 2: Human-Oriented (Attribute) -->
+            <div id="tab-attribute" class="tab-content is-active">
+              <!-- Drill-down Navigation -->
+              <div id="attribute-back-btn-container" class="back-btn-container"
+                style="display: none; margin-bottom: 1.5rem;">
+                <button class="back-to-overview-btn" onclick="backToOverview('attribute')">
+                  <i class="fas fa-arrow-left"></i> Back to Overview
+                </button>
+              </div>
+
+              <div class="evaluation-card table-wrapper-scrollable" id="attribute-table-wrapper">
+                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
+                  id="table-attribute">
+                  <thead id="attribute-thead">
+                    <!-- Dynamic Headers -->
+                  </thead>
+                  <tbody id="attribute-tbody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab 3: Human-Oriented (Hierarchical) -->
+            <div id="tab-hierarchical" class="tab-content">
+              <!-- Drill-down Navigation -->
+              <div id="hierarchical-back-btn-container" class="back-btn-container"
+                style="display: none; margin-bottom: 1.5rem;">
+                <button class="back-to-overview-btn" onclick="backToOverview('hierarchical')">
+                  <i class="fas fa-arrow-left"></i> Back to Overview
+                </button>
+              </div>
+
+              <div class="evaluation-card table-wrapper-scrollable" id="hierarchical-table-wrapper">
+                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
+                  id="table-hierarchical">
+                  <thead id="hierarchical-thead">
+                    <!-- Dynamic Headers -->
+                  </thead>
+                  <tbody id="hierarchical-tbody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab 3: Machine-Oriented (Retrieval) -->
+            <div id="tab-retrieval" class="tab-content">
+              <div class="evaluation-card table-wrapper-scrollable" id="retrieval-table-wrapper">
+                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
+                  id="table-retrieval">
+                  <thead id="retrieval-thead">
+                    <!-- Dynamic Headers -->
+                  </thead>
+                  <tbody id="retrieval-tbody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="has-text-right mt-4" style="font-size: 0.8rem; color: #94a3b8;">
+            Last updated: 05/2026
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Key Findings Module -->
+      <section class="section key-findings-section" id="key-findings">
+        <div class="container is-max-desktop">
+          <div class="has-text-centered" style="margin-bottom: 3rem;">
+            <h2 class="title is-3">Key Findings</h2>
+            <p class="whitespace-nowrap"
+              style="color: #64748b; font-size: 1.05rem; max-width: 1200px; margin: 0.5rem auto 0; text-align: center;">
+              Representative findings derived from the human-oriented and machine-oriented evaluation of LVLMs/VLMs on
+              FG-BMK.
+            </p>
+          </div>
+
+          <!-- Human-Oriented Evaluation -->
+          <div style="margin-bottom: 2.5rem;">
+            <h3 class="title is-5"
+              style="margin-bottom: 1.2rem; color: #1f2937; border-left: 4px solid #3b82f6; padding-left: 12px;">
+              Human-Oriented Evaluation
+            </h3>
+
+            <div class="findings-list" id="human-findings-list">
+              <!-- Dynamic Human-Oriented Findings -->
+            </div>
+          </div>
+
+          <!-- Machine-Oriented Evaluation -->
+          <div>
+            <h3 class="title is-5"
+              style="margin-bottom: 1.2rem; color: #1f2937; border-left: 4px solid #10b981; padding-left: 12px;">
+              Machine-Oriented Evaluation
+            </h3>
+
+            <div class="findings-list" id="machine-findings-list">
+              <!-- Dynamic Machine-Oriented Findings -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why FG-BMK? Section -->
+      <section class="section" id="why-fg-bmk" style="padding: 4rem 1.5rem;">
+        <div class="container is-max-desktop">
+          <h2 class="title is-3 has-text-centered" style="margin-bottom: 2.5rem;">Why FG-BMK?</h2>
+          <p class="text-center text-gray-500 mt-4 px-4 text-sm font-medium">
+            "Our Fine-Grained Evaluation Framework (FG-BMK): a new dual perspective (human-oriented and
+            machine-oriented) to comprehensively assess models' fine-grained visual capabilities."
+          </p>
+          <br>
+          <div class="flex justify-center w-full">
+            <img src="static/images/intro.png" alt="Why FG-BMK?"
+              class="w-full max-w-3xl h-auto rounded-xl shadow-lg border border-gray-100 mx-auto">
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section" id="dataset" style="padding-top: 40px; padding-bottom: 40px;">
+        <div class="container is-max-widescreen">
+          <h2 class="title is-3 has-text-centered" style="margin-bottom: 0.5rem;">Dataset</h2>
+          <p class="has-text-centered" style="color: var(--text-secondary); margin-bottom: 3rem; font-size: 1rem;">
+            12 fine-grained datasets spanning multiple domains &bull; 280K+ images &bull; 1.01M+ questions
+          </p>
+
+          <div class="dataset-dashboard dataset-grid" style="max-width: 1024px; margin: 0 auto; padding: 0 1rem;">
+            <!-- Animals -->
+            <div class="dataset-domain-card domain-animals" style="min-width: 0;">
+              <div class="domain-header"
+                style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
+                <div class="domain-icon" style="color: #3b82f6; margin-right: 12px; font-size: 1.2rem;"><i
+                    class="fas fa-leaf"></i></div>
+                <h3 class="domain-title-refined" style="margin: 0; font-size: 1.1rem;">Nature & Biology</h3>
+              </div>
+              <div class="tags" style="display: flex; flex-wrap: wrap; gap: 12px;">
+                <a href="https://www.vision.caltech.edu/datasets/cub_200_2011/"
+                  class="tag is-info is-light dataset-tag-refined" target="_blank">CUB-200</a>
+                <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/"
+                  class="tag is-info is-light dataset-tag-refined" target="_blank">Stanford Dogs</a>
+                <a href="https://github.com/visipedia/inat_comp/tree/master/2021"
+                  class="tag is-info is-light dataset-tag-refined" target="_blank">iNat2021</a>
+                <a href="https://www.robots.ox.ac.uk/~vgg/data/flowers/102/"
+                  class="tag is-info is-light dataset-tag-refined" target="_blank">Flowers 102</a>
+                <a href="https://github.com/zhoudaxia241/VegFru" class="tag is-info is-light dataset-tag-refined"
+                  target="_blank">VegFru</a>
+              </div>
+            </div>
+
+            <!-- Industrial -->
+            <div class="dataset-domain-card domain-vehicles" style="min-width: 0;">
+              <div class="domain-header"
+                style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
+                <div class="domain-icon" style="color: #cf3a3a; margin-right: 12px; font-size: 1.2rem;"><i
+                    class="fas fa-industry"></i>
+                </div>
+                <h3 class="domain-title-refined" style="margin: 0; font-size: 1.1rem;">Industrial & Manufactured</h3>
+              </div>
+              <div class="tags" style="display: flex; flex-wrap: wrap; gap: 12px;">
+                <a href="https://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/"
+                  class="tag is-danger is-light dataset-tag-refined" target="_blank">FGVC Aircraft</a>
+                <a href="https://www.kaggle.com/datasets/eduardo4jesus/stanford-cars-dataset"
+                  class="tag is-danger is-light dataset-tag-refined" target="_blank">Stanford Cars</a>
+                <a href="https://products-10k.github.io/" class="tag is-danger is-light dataset-tag-refined"
+                  target="_blank">Products-10K</a>
+                <a href="https://tianchi.aliyun.com/dataset/dataDetail?dataId=110147"
+                  class="tag is-danger is-light dataset-tag-refined" target="_blank">Wine</a>
+              </div>
+            </div>
+
+            <!-- Daily Life -->
+            <div class="dataset-domain-card domain-consumer" style="min-width: 0;">
+              <div class="domain-header"
+                style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
+                <div class="domain-icon" style="color: #16a34a; margin-right: 12px; font-size: 1.2rem;"><i
+                    class="fas fa-shopping-bag"></i>
+                </div>
+                <h3 class="domain-title-refined" style="margin: 0; font-size: 1.1rem;">Daily Life & Specialized</h3>
+              </div>
+              <div class="tags" style="display: flex; flex-wrap: wrap; gap: 12px;">
+                <a href="http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html"
+                  class="tag is-success is-light dataset-tag-refined" target="_blank">DeepFashion</a>
+                <a href="https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/"
+                  class="tag is-success is-light dataset-tag-refined" target="_blank">Food-101</a>
+                <a href="https://skincon-dataset.github.io/" class="tag is-success is-light dataset-tag-refined"
+                  target="_blank">SkinCon</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+      <div class="columns is-centered is-multiline" style="gap: 30px;">
+      </div>
+    </section>
+
+
+
+
+    <!-- Per-Dataset Results (MMMU-style) -->
+    <section class="section" id="results">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">Per-Dataset Results</h2>
+        <p class="has-text-centered" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto 1.5rem;">
+          We compare the performance of 7 representative vision models across 12 fine-grained datasets.
+          Models with contrastive training (EVA-CLIP, DINOv2) consistently outperform others.
+        </p>
+
+        <!-- Unified Legend for all Per-Dataset Charts -->
+        <div class="results-legend"
+          style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 2.5rem; padding: 10px; background: rgba(255,255,255,0.4); border-radius: 12px; border: 1px solid rgba(226, 232, 240, 0.6);">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #94a3b8;"></span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">EVA-CLIP</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #0d9488;"></span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">CoCa</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #4f46e5;"></span>
+            <span style="font-size: 0.85rem; font-weight: 600; color: #1e293b;">DINOv2</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;"></span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">BEiT3</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f43f5e;"></span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">LLaVA</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #8b5cf6;"></span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">InternVL</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">Qwen</span>
+          </div>
+        </div>
+
+
+        <!-- Toggle Buttons -->
+        <div class="evaluation-tabs-container">
+          <div class="pill-tabs-container">
+            <button id="btn-cls" class="eval-tab is-active bg-gray-900 text-white shadow" onclick="switchView('cls')">Classification (Top-1
+              Acc%)</button>
+            <button id="btn-retri" class="eval-tab text-gray-600 hover:text-gray-900" onclick="switchView('retri')">Retrieval (mAP%)</button>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="columns is-multiline is-centered" id="charts-grid">
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-cub"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">CUB-200</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-dogs"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Stanford Dogs</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-cars"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Stanford Cars</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-aircraft"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">FGVC Aircraft</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-flowers"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Flowers-102</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-inat"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">iNat2021</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-food"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Food-101</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-clothes"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">DeepFashion</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-vegfru"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">VegFru</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-products"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Products-10K</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-skincon"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">SkinCon</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-wine"></canvas>
+              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Wine</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End Per-Dataset Results -->
+
+
+
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+            <i class="fas fa-copy"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@inproceedings{yu2026fgbmk,
+  title={Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation},
+  author={Yu, Hong-Tao and Xie, Chen-Wei and Peng, Yuxin and Belongie, Serge and Wei, Xiu-Shen},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2026}
+}</code></pre>
+      </div>
+    </section>
+    <!--End BibTex citation -->
+
+
+    <footer class="footer">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content">
+
+              <p>
+                This webpage presents the <strong>FG-BMK</strong> benchmark project.
+                The content is based on the research paper "Benchmarking Large Vision-Language Models on Fine-Grained
+                Image Tasks: A Comprehensive Evaluation".
+                This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                  target="_blank">Academic Project Page Template</a>.
+                You are free to borrow the source code of this website, we just ask that you link back to this page in
+                the footer. <br> This website is licensed under a <a rel="license"
+                  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+                  Commons Attribution-ShareAlike 4.0 International License</a>.
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Statcounter tracking code -->
+
+    <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+</body>
+
+</html>

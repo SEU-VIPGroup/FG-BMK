@@ -1,0 +1,310 @@
+[
+    {
+        "id": 1,
+        "model": "InternVL3-7B",
+        "badge": "LVLM",
+        "overview": {
+            "color": 47.4,
+            "pattern": 50.13,
+            "shape": 30.95,
+            "length": 71.03,
+            "size": 52.55
+        },
+        "color": {
+            "belly": 58.49,
+            "back": 34.98,
+            "bill": 51.31,
+            "breast": 54.25,
+            "crown": 55.3,
+            "eye": 84.59,
+            "forehead": 53.32,
+            "leg": 44.01,
+            "nape": 39.24,
+            "throat": 52.77,
+            "under_tail": 34.69,
+            "underparts": 56.2,
+            "upper_tail": 37.3,
+            "upperparts": 28.75,
+            "wing": 30.16,
+            "primary": 43.05
+        },
+        "pattern": {
+            "back": 40.94,
+            "tail": 41.64,
+            "belly": 68.13,
+            "wing": 49.04,
+            "breast": 65.12,
+            "head": 35.92
+        },
+        "shape": {
+            "bill": 37.61,
+            "shape": 52.37,
+            "tail": 10.42,
+            "wing": 23.39
+        }
+    },
+    {
+        "id": 2,
+        "model": "Gemini-2.0-flash",
+        "badge": "LVLM",
+        "overview": {
+            "color": 47.22,
+            "pattern": 56.14,
+            "shape": 48.75,
+            "length": 71.82,
+            "size": 52.72
+        },
+        "color": {
+            "belly": 36.51,
+            "back": 62.09,
+            "bill": 52.31,
+            "breast": 56.01,
+            "crown": 59.57,
+            "eye": 56.44,
+            "forehead": 53.55,
+            "leg": 40.66,
+            "nape": 60.23,
+            "throat": 40.4,
+            "under_tail": 40.6,
+            "underparts": 59.65,
+            "upper_tail": 39.99,
+            "upperparts": 29.66,
+            "wing": 29.21,
+            "primary": 38.69
+        },
+        "pattern": {
+            "back": 56.26,
+            "tail": 52.33,
+            "belly": 70.51,
+            "wing": 51.26,
+            "breast": 66.89,
+            "head": 39.56
+        },
+        "shape": {
+            "bill": 61.62,
+            "shape": 68.2,
+            "tail": 32.13,
+            "wing": 33.04
+        }
+    },
+    {
+        "id": 3,
+        "model": "LLaVA-1.5-7B",
+        "badge": "LVLM",
+        "overview": {
+            "color": 44.34,
+            "pattern": 23.69,
+            "shape": 14.05,
+            "length": 15.71,
+            "size": 49.47
+        },
+        "color": {
+            "belly": 54.79,
+            "back": 41.44,
+            "bill": 41.9,
+            "breast": 49.56,
+            "crown": 48.71,
+            "eye": 47.03,
+            "forehead": 69.27,
+            "leg": 35.37,
+            "nape": 40.51,
+            "throat": 35.4,
+            "under_tail": 38.88,
+            "underparts": 54.81,
+            "upper_tail": 41.41,
+            "upperparts": 34.0,
+            "wing": 34.6,
+            "primary": 41.77
+        },
+        "pattern": {
+            "back": 27.27,
+            "tail": 23.19,
+            "belly": 26.41,
+            "wing": 29.67,
+            "breast": 24.24,
+            "head": 11.35
+        },
+        "shape": {
+            "bill": 1.39,
+            "shape": 18.59,
+            "tail": 9.89,
+            "wing": 26.34
+        }
+    },
+    {
+        "id": 4,
+        "model": "Qwen2.5-VL",
+        "badge": "LVLM",
+        "overview": {
+            "color": 40.39,
+            "pattern": 45.12,
+            "shape": 29.3,
+            "length": 63.2,
+            "size": 52.56
+        },
+        "color": {
+            "belly": 51.11,
+            "back": 32.89,
+            "bill": 44.84,
+            "breast": 37.79,
+            "crown": 46.54,
+            "eye": 46.5,
+            "forehead": 44.57,
+            "leg": 36.49,
+            "nape": 40.74,
+            "throat": 34.6,
+            "under_tail": 27.2,
+            "underparts": 50.2,
+            "upper_tail": 34.92,
+            "upperparts": 26.03,
+            "wing": 36.96,
+            "primary": 20.9
+        },
+        "pattern": {
+            "back": 42.66,
+            "tail": 45.04,
+            "belly": 64.58,
+            "wing": 44.11,
+            "breast": 59.79,
+            "head": 14.57
+        },
+        "shape": {
+            "bill": 15.3,
+            "shape": 58.17,
+            "tail": 5.63,
+            "wing": 38.1
+        }
+    },
+    {
+        "id": 5,
+        "model": "BLIP-2",
+        "badge": "LVLM",
+        "overview": {
+            "color": 37.94,
+            "pattern": 11.34,
+            "shape": 25.05,
+            "length": 30.11,
+            "size": 27.62
+        },
+        "color": {
+            "belly": 51.15,
+            "back": 39.64,
+            "bill": 23.42,
+            "breast": 50.17,
+            "crown": 42.59,
+            "eye": 43.18,
+            "forehead": 23.59,
+            "leg": 18.77,
+            "nape": 41.55,
+            "throat": 53.81,
+            "under_tail": 37.98,
+            "underparts": 41.6,
+            "upper_tail": 37.52,
+            "upperparts": 33.01,
+            "wing": 31.25,
+            "primary": 33.48
+        },
+        "pattern": {
+            "back": 14.66,
+            "tail": 14.21,
+            "belly": 9.48,
+            "wing": 7.82,
+            "breast": 19.73,
+            "head": 2.14
+        },
+        "shape": {
+            "bill": 8.84,
+            "shape": 34.69,
+            "tail": 13.51,
+            "wing": 43.19
+        }
+    },
+    {
+        "id": 6,
+        "model": "GPT-4o",
+        "badge": "LVLM",
+        "overview": {
+            "color": 44.95,
+            "pattern": 52.24,
+            "shape": 45.64,
+            "length": 74.38,
+            "size": 50.73
+        },
+        "color": {
+            "belly": 60.22,
+            "back": 38.16,
+            "bill": 51.47,
+            "breast": 55.97,
+            "crown": 55.23,
+            "eye": 30.94,
+            "forehead": 53.12,
+            "leg": 40.46,
+            "nape": 41.5,
+            "throat": 57.71,
+            "under_tail": 35.97,
+            "underparts": 60.51,
+            "upper_tail": 37.97,
+            "upperparts": 30.0,
+            "wing": 30.67,
+            "primary": 39.22
+        },
+        "pattern": {
+            "back": 48.16,
+            "tail": 42.56,
+            "belly": 68.78,
+            "wing": 50.14,
+            "breast": 65.45,
+            "head": 38.35
+        },
+        "shape": {
+            "bill": 48.23,
+            "shape": 65.55,
+            "tail": 28.66,
+            "wing": 40.13
+        }
+    },
+    {
+        "id": 7,
+        "model": "Qwen-VL-Chat",
+        "badge": "LVLM",
+        "overview": {
+            "color": 30.28,
+            "pattern": 49.29,
+            "shape": 17.09,
+            "length": 12.23,
+            "size": 1.23
+        },
+        "color": {
+            "belly": 34.2,
+            "back": 33.51,
+            "bill": 26.92,
+            "breast": 31.3,
+            "crown": 42.03,
+            "eye": 15.76,
+            "forehead": 38.82,
+            "leg": 26.02,
+            "nape": 33.82,
+            "throat": 26.64,
+            "under_tail": 27.27,
+            "underparts": 28.74,
+            "upper_tail": 32.7,
+            "upperparts": 26.26,
+            "wing": 25.64,
+            "primary": 34.78
+        },
+        "pattern": {
+            "back": 52.01,
+            "tail": 51.06,
+            "belly": 70.14,
+            "wing": 45.27,
+            "breast": 64.82,
+            "head": 12.42
+        },
+        "shape": {
+            "bill": 0.76,
+            "shape": 36.02,
+            "tail": 1.37,
+            "wing": 30.2
+        }
+    }
+]

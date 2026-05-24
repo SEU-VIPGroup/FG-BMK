@@ -1,0 +1,272 @@
+{
+    "classification": [
+        {
+            "id": 1,
+            "model": "InternVL",
+            "badge": "LVLM",
+            "scores": {
+                "cub": 89.92,
+                "flowers": 99.41,
+                "dogs": 89.09,
+                "cars": 93.34,
+                "aircrafts": 79.05,
+                "products": 58.03,
+                "food101": 96.07,
+                "clothes": 71.12,
+                "vegfru": 95.57,
+                "skincon": 94.53,
+                "wine": 94.07,
+                "inat2021": 57.90
+            }
+        },
+        {
+            "id": 2,
+            "model": "DINOv2-L",
+            "badge": "PURE VISION",
+            "scores": {
+                "cub": 91.65,
+                "flowers": 99.69,
+                "dogs": 90.50,
+                "cars": 91.72,
+                "aircrafts": 78.88,
+                "products": 58.88,
+                "food101": 95.12,
+                "clothes": 66.70,
+                "vegfru": 96.44,
+                "skincon": 94.79,
+                "wine": 96.36,
+                "inat2021": 77.07
+            }
+        },
+        {
+            "id": 3,
+            "model": "EVA-CLIP",
+            "badge": "VLM",
+            "scores": {
+                "cub": 88.95,
+                "flowers": 99.45,
+                "dogs": 87.69,
+                "cars": 94.30,
+                "aircrafts": 70.27,
+                "products": 65.05,
+                "food101": 95.67,
+                "clothes": 72.03,
+                "vegfru": 94.73,
+                "skincon": 94.49,
+                "wine": 92.53,
+                "inat2021": 64.70
+            }
+        },
+        {
+            "id": 4,
+            "model": "BEIT3",
+            "badge": "VLM",
+            "scores": {
+                "cub": 82.67,
+                "flowers": 95.59,
+                "dogs": 80.07,
+                "cars": 88.43,
+                "aircrafts": 50.47,
+                "products": 49.21,
+                "food101": 89.13,
+                "clothes": 65.45,
+                "vegfru": 85.84,
+                "skincon": 86.42,
+                "wine": 88.85,
+                "inat2021": 43.55
+            }
+        },
+        {
+            "id": 5,
+            "model": "Qwen",
+            "badge": "LVLM",
+            "scores": {
+                "cub": 80.08,
+                "flowers": 97.43,
+                "dogs": 77.02,
+                "cars": 90.67,
+                "aircrafts": 51.15,
+                "products": 54.33,
+                "food101": 88.90,
+                "clothes": 69.37,
+                "vegfru": 86.98,
+                "skincon": 73.90,
+                "wine": 90.70,
+                "inat2021": 38.90
+            }
+        },
+        {
+            "id": 6,
+            "model": "CoCa",
+            "badge": "VLM",
+            "scores": {
+                "cub": 79.89,
+                "flowers": 98.46,
+                "dogs": 81.24,
+                "cars": 92.36,
+                "aircrafts": 63.40,
+                "products": 39.12,
+                "food101": 92.38,
+                "clothes": 71.45,
+                "vegfru": 91.08,
+                "skincon": 86.70,
+                "wine": 90.72,
+                "inat2021": 40.59
+            }
+        },
+        {
+            "id": 7,
+            "model": "LLaVA-1.5-7B",
+            "badge": "LVLM",
+            "scores": {
+                "cub": 79.54,
+                "flowers": 98.04,
+                "dogs": 80.73,
+                "cars": 87.56,
+                "aircrafts": 62.46,
+                "products": 51.31,
+                "food101": 94.53,
+                "clothes": 68.69,
+                "vegfru": 90.72,
+                "skincon": 81.29,
+                "wine": 93.98,
+                "inat2021": 39.77
+            }
+        }
+    ],
+    "retrieval": [
+        {
+            "id": 1,
+            "model": "InternVL",
+            "badge": "LVLM",
+            "scores": {
+                "cub": 91.47,
+                "flowers": 99.66,
+                "dogs": 92.33,
+                "cars": 92.47,
+                "aircrafts": 79.86,
+                "products": 44.08,
+                "food101": 96.17,
+                "clothes": 70.68,
+                "vegfru": 95.88,
+                "skincon": 64.86,
+                "wine": 71.61,
+                "inat2021": 42.97
+            }
+        },
+        {
+            "id": 2,
+            "model": "DINOv2-L",
+            "badge": "PURE VISION",
+            "scores": {
+                "cub": 91.95,
+                "flowers": 99.70,
+                "dogs": 91.72,
+                "cars": 89.53,
+                "aircrafts": 81.07,
+                "products": 30.05,
+                "food101": 92.48,
+                "clothes": 69.53,
+                "vegfru": 95.06,
+                "skincon": 62.49,
+                "wine": 78.77,
+                "inat2021": 40.58
+            }
+        },
+        {
+            "id": 3,
+            "model": "EVA-CLIP",
+            "badge": "VLM",
+            "scores": {
+                "cub": 90.33,
+                "flowers": 99.60,
+                "dogs": 89.47,
+                "cars": 95.11,
+                "aircrafts": 77.81,
+                "products": 48.05,
+                "food101": 95.09,
+                "clothes": 73.69,
+                "vegfru": 93.77,
+                "skincon": 67.32,
+                "wine": 70.66,
+                "inat2021": 38.65
+            }
+        },
+        {
+            "id": 4,
+            "model": "BEIT3",
+            "badge": "VLM",
+            "scores": {
+                "cub": 84.06,
+                "flowers": 95.98,
+                "dogs": 82.96,
+                "cars": 88.77,
+                "aircrafts": 57.64,
+                "products": 37.36,
+                "food101": 86.27,
+                "clothes": 66.40,
+                "vegfru": 83.89,
+                "skincon": 62.48,
+                "wine": 68.50,
+                "inat2021": 31.83
+            }
+        },
+        {
+            "id": 5,
+            "model": "CoCa",
+            "badge": "VLM",
+            "scores": {
+                "cub": 77.38,
+                "flowers": 96.88,
+                "dogs": 79.46,
+                "cars": 88.44,
+                "aircrafts": 69.46,
+                "products": 32.94,
+                "food101": 85.79,
+                "clothes": 69.55,
+                "vegfru": 85.54,
+                "skincon": 60.23,
+                "wine": 65.40,
+                "inat2021": 36.88
+            }
+        },
+        {
+            "id": 6,
+            "model": "LLaVA-1.5-7B",
+            "badge": "LVLM",
+            "scores": {
+                "cub": 75.63,
+                "flowers": 96.24,
+                "dogs": 77.43,
+                "cars": 85.49,
+                "aircrafts": 63.56,
+                "products": 30.85,
+                "food101": 87.55,
+                "clothes": 67.86,
+                "vegfru": 79.04,
+                "skincon": 61.44,
+                "wine": 65.19,
+                "inat2021": 34.79
+            }
+        },
+        {
+            "id": 7,
+            "model": "Qwen",
+            "badge": "LVLM",
+            "scores": {
+                "cub": 74.80,
+                "flowers": 95.11,
+                "dogs": 74.16,
+                "cars": 86.64,
+                "aircrafts": 50.66,
+                "products": 29.29,
+                "food101": 81.77,
+                "clothes": 68.78,
+                "vegfru": 78.06,
+                "skincon": 60.51,
+                "wine": 62.84,
+                "inat2021": 35.67
+            }
+        }
+    ]
+}
