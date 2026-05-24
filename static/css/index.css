@@ -1790,6 +1790,22 @@ a:focus {
   --leaderboard-accent-soft: rgba(63, 95, 138, 0.07);
 }
 
+/* Widen the leaderboard container so more dataset columns are visible
+   before horizontal scrolling kicks in. Falls back to viewport-relative
+   width on smaller screens; horizontal scrollbar still appears when the
+   table is wider than the container. */
+#leaderboard .leaderboard-container.container.is-max-widescreen {
+  max-width: calc(100vw - 48px) !important;
+  width: calc(100vw - 48px) !important;
+}
+
+@media screen and (max-width: 1023px) {
+  #leaderboard .leaderboard-container.container.is-max-widescreen {
+    max-width: calc(100vw - 32px) !important;
+    width: calc(100vw - 32px) !important;
+  }
+}
+
 #leaderboard .evaluation-tabs-container {
   margin-bottom: 1.65rem;
 }
