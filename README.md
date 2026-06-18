@@ -29,7 +29,7 @@
 ## 🔔 News
 
 - **🔥 [2026-06-18]** An extended version of our paper is now on [arXiv](https://arxiv.org/abs/2606.19053).
-- **✨ [2026-06-01]** Major benchmark update — we added a new dataset, **MASTRI**, and expanded the suite with additional experimental validation and analysis.
+- **✨ [2026-06-01]** Major benchmark update — we added a new dataset, **[MTARSI](https://huggingface.co/datasets/amistele/MTARSI-fixed)**, and expanded the suite with additional experimental validation and analysis.
 - **🎉 [ICLR 2026]** Our paper has been **accepted to ICLR 2026**! The ICLR version is available on [arXiv](https://arxiv.org/abs/2504.14988).
 - **🚀 [2025-02-06]** We released our **FG-BMK** benchmark!
 
@@ -60,6 +60,7 @@ Before running inference, download the corresponding dataset images. Links to th
 | [Oxford 102 Flower (flowers102)](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/) | [Food-101 (food101)](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/) | [iNat2021 (iNat2021)](https://github.com/visipedia/inat_comp/tree/master/2021) |
 | [Products-10K (products10k)](https://products-10k.github.io/challenge.html#downloads) | [SkinCon (skincon)](https://skincon-dataset.github.io/) | [Stanford Car (stanfordcar)](https://www.sighthound.com/products/alpr) |
 | [Stanford Dog (stanforddog)](http://vision.stanford.edu/aditya86/ImageNetDogs/) | [VegFru (vegfru)](https://github.com/ustc-vim/vegfru) | [Wine (wine)](https://tianchi.aliyun.com/dataset/110147) |
+| [MTARSI (mtarsi)](https://huggingface.co/datasets/amistele/MTARSI-fixed) | | |
 
 - **Human-oriented evaluations** — questions are pre-generated for each image, e.g. `benchmark/human-oriented/attribute_recognition/cub_attribute_questions.jsonl`.
 - **Machine-oriented evaluations** — dataset categories and the corresponding `train.csv` / `test.csv` splits live in directories such as `benchmark/machine-oriented/aircraft`.
