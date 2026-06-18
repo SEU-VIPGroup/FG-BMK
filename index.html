@@ -1,950 +1,628 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Primary Meta Tags -->
-  <!-- TODO: Replace with your paper title and author names -->
-  <meta name="title"
-    content="Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation">
-  <!-- TODO: Write a compelling 150-160 character description of your research -->
+  <title>FG-BMK — Benchmarking LVLMs on Fine-Grained Image Tasks</title>
   <meta name="description"
-    content="`FG-BMK evaluates MLLMs on fine-grained visual recognition, revealing a significant alignment gap between strong visual perception and poor language articulation.`">
-  <!-- TODO: Add 5-10 relevant keywords for your research area -->
+    content="FG-BMK is a comprehensive fine-grained evaluation benchmark (1.01M questions, 0.28M images) that diagnoses LVLMs from human-oriented and machine-oriented perspectives — assessing, diagnosing, improving, and stress-testing fine-grained visual ability.">
   <meta name="keywords"
-    content=" Fine-Grained Visual Recognition, Multimodal Large Language Models, Benchmark, Alignment Gap,machine learning, computer vision, AI">
-  <!-- TODO: List all authors -->
+    content="FG-BMK, fine-grained, large vision-language models, LVLM, benchmark, evaluation, TPAMI, visual representation">
   <meta name="author" content="Hong-Tao Yu, Chen-Wei Xie, Yuxin Peng, Serge Belongie, Xiu-Shen Wei">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
-  <!-- TODO: Replace with your institution or lab name -->
-  <meta property="og:site_name"
-    content="FG-BMK — Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks">
-  <!-- TODO: Same as paper title above -->
-  <meta property="og:title"
-    content="Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation">
-  <!-- TODO: Same as description above -->
+  <meta property="og:title" content="FG-BMK — Benchmarking LVLMs on Fine-Grained Image Tasks">
   <meta property="og:description"
-    content="FG-BMK evaluates MLLMs on fine-grained visual recognition, revealing a significant alignment gap between strong visual perception and poor language articulation.">
-  <!-- 网页的真实链接 -->
-  <meta property="og:url" content="https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE">
+    content="A diagnostic fine-grained benchmark for LVLMs: assess, diagnose, improve, and stress-test fine-grained visual ability.">
 
-  <!-- TODO: Create a 1200x630px preview image and update path -->
-  <meta property="og:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="FG-BMK: A Fine-Grained Vision Benchmark for Multimodal Alignment Gap ">
-  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
-  <meta property="article:author" content="Hong-Tao Yu, Chen-Wei Xie, Yuxin Peng, Serge Belongie, Xiu-Shen Wei">
-  <meta property="article:section" content="Research">
-  <meta property="article:tag" content="Fine-Grained Visual Recognition">
-  <meta property="article:tag" content="Multimodal Large Language Models">
-  <meta property="article:tag" content="Benchmark">
-  <meta property="article:tag" content="Alignment Gap">
-
-  <!-- Academic/Research Specific -->
-  <meta name="citation_title"
-    content="Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation">
-  <meta name="citation_author" content="Yu, Hong-Tao">
-  <meta name="citation_author" content="Peng, Yuxin">
-  <meta name="citation_author" content="Belongie, Serge">
-  <meta name="citation_author" content="Wei, Xiu-Shen">
-  <meta name="citation_publication_date" content="2026">
-  <meta name="citation_conference_title" content="International Conference on Learning Representations (ICLR)">
-  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2504.14988.pdf">
-
-  <!-- Additional SEO -->
-  <meta name="theme-color" content="#2563eb">
-  <meta name="msapplication-TileColor" content="#2563eb">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-  <!-- Preconnect for performance -->
+  <link rel="icon" type="image/svg+xml" href="static/images/benchmark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-
-  <title>FG-BMK</title>
-
-  <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="static/images/benchmark.svg">
-  <link rel="apple-touch-icon" href="static/images/benchmark.svg">
-
-  <!-- Critical CSS - Load synchronously -->
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-
-  <!-- Non-critical CSS - Load asynchronously -->
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-
-  <!-- Fallback for browsers that don't support preload -->
-  <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  </noscript>
-
-  <!-- Fonts - Optimized loading -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700;8..60,800&display=swap" rel="stylesheet">
-
-  <!-- Defer non-critical JavaScript -->
-  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-  <script defer src="static/js/index.js?v=3"></script>
+  <script defer src="static/js/data.js"></script>
+  <script defer src="static/js/app.js"></script>
 
-  <!-- Structured Data for Academic Papers -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
-    "headline": "Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation",
-    "description": "FG-BMK evaluates MLLMs on fine-grained visual recognition, revealing a significant alignment gap between strong visual perception and poor language articulation.",
-    "author": [
-      {
-        "@type": "Person",
-        "name": "Hong-Tao Yu"
-      },
-      {
-        "@type": "Person",
-        "name": "Chen-Wei Xie"
-      },
-      {
-        "@type": "Person",
-        "name": "Yuxin Peng"
-      },
-      {
-        "@type": "Person",
-        "name": "Serge Belongie"
-      },
-      {
-        "@type": "Person",
-        "name": "Xiu-Shen Wei"
-      }
-    ],
-    "datePublished": "2025-04-14",
-    "publisher": {
-      "@type": "Organization",
-      "name": "arXiv"
-    },
-    "url": "https://arxiv.org/abs/2504.14988",
-    "image": "https://your-domain.com/static/images/social_preview.png",
-    "keywords": ["Fine-Grained Visual Recognition", "Multimodal Large Language Models", "Benchmark", "Alignment Gap"],
-    "abstract": "Recent advancements in Large Vision-Language Models (LVLMs) have demonstrated remarkable multimodal perception capabilities, garnering significant attention. While numerous evaluation studies have emerged, assessing LVLMs both holistically and on specialized tasks, fine-grained image tasks—fundamental to computer vision—remain largely unexplored. To fill this gap, we introduce a comprehensive fine-grained evaluation benchmark, i.e., FG-BMK, comprising 1.01 million questions and 0.33 million images.",
-    "isAccessibleForFree": true,
-    "license": "https://creativecommons.org/licenses/by/4.0/"
-  }
-  </script>
-
-  <!-- Website/Organization Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "SEU-VIPGroup",
-    "url": "https://github.com/SEU-VIPGroup/FG-BMK",
-    "sameAs": [
-      "https://github.com/SEU-VIPGroup"
-    ]
-  }
-  </script>
-  <!-- Dataset Styles -->
   <style>
-    .ds-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      max-width: 960px;
-      margin: 0 auto;
+    /* ============ LIGHT THEME (default — "academic paper") ============ */
+    :root,
+    [data-theme="light"] {
+      --accent: #0f6e63; --accent-soft: rgba(15,110,99,.10); --accent-deep: #0b554c;
+      --blue: #2f6f9e; --blue-soft: rgba(47,111,158,.12); --blue-deep: #285d85;
+      --amber: #b3741e; --amber-soft: rgba(179,116,30,.13); --amber-deep: #8f5c15;
+      --emerald: #2f7d5b; --emerald-soft: rgba(47,125,91,.13); --emerald-deep: #266148;
+      --violet: #7b4ea3; --violet-soft: rgba(123,78,163,.13); --violet-deep: #633e84;
+      --bg: #f7f5ef; --bg-alt: #efece2; --surface: #ffffff; --surface-2: #faf8f2;
+      --text: #1c1a16; --text-2: #57514a; --text-muted: #948c7e;
+      --border: #e4ddcf; --border-l: #efe9dd;
+      --nav-bg: rgba(247,245,239,.82); --nav-border: rgba(190,182,166,.55);
+      --card-shadow: 0 1px 2px rgba(40,33,20,.04), 0 14px 36px rgba(40,33,20,.05);
+      --best-bg: rgba(47,125,91,.12); --best-text: #266148; --best-border: rgba(47,125,91,.38);
+      --ink-btn-bg: #1c1a16; --ink-btn-color: #f7f5ef;
+      --scrolltop-bg: #1c1a16; --scrolltop-color: #f7f5ef;
+      --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+      --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+      --max-w: 1120px; --radius: 14px; --radius-sm: 9px;
+      color-scheme: light;
+    }
+    /* ============ DARK THEME ============ */
+    [data-theme="dark"] {
+      --accent: #3fb8a9; --accent-soft: rgba(63,184,169,.15); --accent-deep: #6fd3c6;
+      --blue: #6aa6d8; --blue-soft: rgba(106,166,216,.16); --blue-deep: #9cc6ea;
+      --amber: #e6b15c; --amber-soft: rgba(230,177,92,.16); --amber-deep: #f0c987;
+      --emerald: #5cc296; --emerald-soft: rgba(92,194,150,.16); --emerald-deep: #8ad9b7;
+      --violet: #b384d9; --violet-soft: rgba(179,132,217,.17); --violet-deep: #cdadeb;
+      --bg: #17161a; --bg-alt: #1e1d22; --surface: #232227; --surface-2: #2a2930;
+      --text: #ece8df; --text-2: #aaa49a; --text-muted: #7d776c;
+      --border: #343139; --border-l: #2a2930;
+      --nav-bg: rgba(23,22,26,.8); --nav-border: rgba(70,66,76,.6);
+      --card-shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px rgba(0,0,0,.34);
+      --best-bg: rgba(92,194,150,.16); --best-text: #8ad9b7; --best-border: rgba(92,194,150,.4);
+      --ink-btn-bg: #ece8df; --ink-btn-color: #17161a;
+      --scrolltop-bg: #2a2930; --scrolltop-color: #ece8df;
+      color-scheme: dark;
     }
 
-    @media (max-width: 768px) {
-      .ds-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    * , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--bg); line-height: 1.7; font-size: 16.5px; transition: background .4s, color .4s; }
+    [data-theme="light"] body {
+      background-image:
+        radial-gradient(900px 480px at 88% -120px, rgba(15,110,99,.05), transparent 70%),
+        radial-gradient(700px 420px at -5% 18%, rgba(179,116,30,.04), transparent 70%);
+      background-attachment: fixed;
+    }
+    [data-theme="dark"] body {
+      background-image:
+        radial-gradient(900px 500px at 86% -140px, rgba(63,184,169,.08), transparent 70%),
+        radial-gradient(720px 460px at -6% 20%, rgba(230,177,92,.045), transparent 70%);
+      background-attachment: fixed;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    ::selection { background: var(--accent-soft); }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 30px; }
+    .section { padding: 78px 0; position: relative; scroll-margin-top: 72px; }
+    .section.tight { padding-top: 20px; }
+    .divider-rule { max-width: var(--max-w); margin: 0 auto; height: 1px; background: var(--border); opacity: .8; }
+
+    /* Section heads — prominent, editorial */
+    .kicker { font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .2em; color: var(--accent); display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .kicker::before { content: ''; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .kicker.center { justify-content: center; }
+    .section-title { font-family: var(--font-display); font-size: clamp(2.1rem, 3.6vw, 3rem); font-weight: 600; line-height: 1.08; letter-spacing: -.012em; margin-bottom: 18px; }
+    .section-title .lead { font-style: italic; font-weight: 500; color: var(--accent-deep); }
+    .section-lead { font-size: 1.1rem; color: var(--text-2); max-width: 760px; line-height: 1.7; }
+    .center-head { text-align: center; }
+    .center-head .section-lead { margin-left: auto; margin-right: auto; }
+
+    /* NAV */
+    .nav { position: fixed; inset: 0 0 auto 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(18px) saturate(170%); -webkit-backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid transparent; transition: border-color .3s, box-shadow .3s, background .4s; }
+    .nav.scrolled { border-bottom-color: var(--nav-border); box-shadow: 0 1px 20px rgba(40,33,20,.07); }
+    .nav-inner { max-width: var(--max-w); margin: 0 auto; padding: 0 30px; height: 62px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; display: flex; align-items: center; gap: 10px; letter-spacing: -.01em; }
+    .nav-brand img { width: 23px; height: 23px; }
+    .nav-brand .tag { font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .1em; padding: 3px 7px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-deep); }
+    .nav-right { display: flex; align-items: center; gap: 30px; }
+    .nav-links { display: flex; gap: 26px; list-style: none; }
+    .nav-links a { font-size: 13.5px; font-weight: 500; color: var(--text-2); transition: color .2s; position: relative; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px; background: var(--accent); border-radius: 2px; transition: width .3s; }
+    .nav-links a:hover::after { width: 100%; }
+    @media (max-width: 900px) { .nav-links { display: none; } }
+
+    /* THEME SWITCH */
+    .theme-switch { display: inline-flex; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 4px; cursor: pointer; position: relative; user-select: none; }
+    .theme-switch .ts-knob { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: var(--text); top: 4px; left: 4px; transition: transform .35s cubic-bezier(.4,0,.2,1); }
+    [data-theme="dark"] .theme-switch .ts-knob { transform: translateX(26px); }
+    .theme-switch .ts-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-muted); position: relative; z-index: 1; }
+    [data-theme="light"] .ts-sun { color: var(--surface); }
+    [data-theme="dark"] .ts-moon { color: var(--surface); }
+
+    /* HERO */
+    .hero { padding: 128px 0 64px; position: relative; overflow: hidden; }
+    .hero-inner { position: relative; z-index: 2; text-align: center; max-width: 1000px; margin: 0 auto; }
+    .hero-masthead { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 2px; }
+    .hero-logo { width: 44px; height: 44px; flex-shrink: 0; opacity: .9; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(2.7rem, 6vw, 4.3rem); font-weight: 600; line-height: 1; letter-spacing: -.025em; margin: 0; }
+    .hero-title .dash { color: var(--accent); font-style: italic; font-weight: 500; }
+    .hero-paper-title { font-family: var(--font-display); font-size: clamp(1.5rem, 2.4vw, 1.9rem); font-weight: 500; color: var(--text); max-width: 900px; margin: 20px auto 26px; line-height: 1.4; letter-spacing: -.01em; }
+    .authors { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; margin-bottom: 13px; font-size: 1.2rem; }
+    .authors span { font-weight: 500; }
+    .authors a { border-bottom: 1.5px solid transparent; transition: border-color .2s; }
+    .authors a:hover { border-color: var(--accent); }
+    .authors sup { font-size: .62em; color: var(--text-muted); }
+    .affil { font-size: .95rem; color: var(--text-muted); line-height: 1.85; max-width: 940px; margin: 0 auto 32px; text-align: center; }
+    .hero-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; }
+    .hero-link { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-size: 13.5px; font-weight: 600; transition: transform .25s, box-shadow .25s, background .25s; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+    .hero-link:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(40,33,20,.12); }
+    .hero-link--primary { background: var(--ink-btn-bg); color: var(--ink-btn-color); border-color: var(--ink-btn-bg); }
+    .hero-link i, .hero-link .ai { font-size: 15px; }
+    @media (max-width: 640px) {
+      .hero-masthead { gap: 14px; }
+      .hero-logo { width: 44px; height: 44px; }
     }
 
-    .ds-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px 18px;
-      border: 1px solid #f3f4f6;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-      transition: all 0.3s ease;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: inherit;
-      position: relative;
-      overflow: hidden;
-    }
+    /* STATS */
+    .stats { padding: 0 0 8px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--card-shadow); }
+    .stat { background: var(--surface); padding: 30px 20px; text-align: center; transition: background .3s; position: relative; }
+    .stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; opacity: 0; transition: opacity .3s; }
+    .stat:hover { background: var(--surface-2); }
+    .stat:hover::before { opacity: 1; }
+    .stat-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 600; line-height: 1; margin-bottom: 8px; letter-spacing: -.02em; }
+    .stat-num span { font-family: var(--font-body); font-size: .4em; font-weight: 700; vertical-align: super; margin-left: 2px; }
+    .stat:nth-child(1) .stat-num { color: var(--blue); } .stat:nth-child(1)::before { background: var(--blue); }
+    .stat:nth-child(2) .stat-num { color: var(--amber); } .stat:nth-child(2)::before { background: var(--amber); }
+    .stat:nth-child(3) .stat-num { color: var(--emerald); } .stat:nth-child(3)::before { background: var(--emerald); }
+    .stat:nth-child(4) .stat-num { color: var(--violet); } .stat:nth-child(4)::before { background: var(--violet); }
+    .stat-label { font-size: .82rem; color: var(--text-muted); font-weight: 600; font-family: var(--font-mono); letter-spacing: .03em; }
+    @media (max-width: 720px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 
-    .ds-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      border-radius: 0 0 12px 12px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    /* ABSTRACT */
+    .abstract-wrap { max-width: 100%; }
+    .abstract-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 38px 46px; box-shadow: var(--card-shadow); position: relative; border-left: 4px solid var(--accent); }
+    .abstract-text { font-size: 1.0rem; line-height: 1.85; color: var(--text-2); text-align: justify; hyphens: auto; }
+    .abstract-text strong { color: var(--text); font-weight: 600; }
+    @media (max-width: 640px) { .abstract-card { padding: 28px 24px; } .abstract-text { font-size: .96rem; text-align: left; } }
 
-    .ds-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-      border-color: #e5e7eb;
-    }
+    /* WHY / FIGURE */
+    .figure-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--card-shadow); }
+    .figure-card img { width: 100%; background: #fff; display: block; }
+    .figure-cap { padding: 16px 28px; border-top: 1px solid var(--border); background: var(--bg-alt); text-align: center; font-size: .86rem; color: var(--text-2); line-height: 1.6; }
+    .figure-wide { max-width: var(--max-w); margin: 34px auto 0; padding: 0 30px; }
+    @media (max-width: 640px) { .figure-wide { padding: 0 16px; } }
 
-    .ds-card:hover::after {
-      opacity: 1;
-    }
+    /* LEADERBOARD */
+    .eval-tabs { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin: 0 auto 18px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 100px; padding: 5px; width: fit-content; }
+    .eval-tab { padding: 9px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text-2); transition: all .25s; font-family: var(--font-body); white-space: nowrap; }
+    .eval-tab:hover { color: var(--text); }
+    .eval-tab.is-active { background: var(--surface); color: var(--text); box-shadow: 0 1px 6px rgba(40,33,20,.12); }
+    .leaderboard-footnote { text-align: center; color: var(--text-2); font-size: .95rem; max-width: 780px; margin: 0 auto 26px; }
+    .tab-content { display: none; }
+    .tab-content.is-active { display: block; animation: fadeUp .4s ease; }
+    .back-btn { align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--text-2); background: var(--surface); border: 1px solid var(--border); padding: 7px 14px; border-radius: 100px; cursor: pointer; margin-bottom: 16px; font-family: var(--font-body); transition: color .2s; }
+    .back-btn:hover { color: var(--text); }
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; box-shadow: var(--card-shadow); }
+    .eval-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: .87rem; min-width: 720px; }
+    .eval-table thead th { position: sticky; top: 0; background: var(--bg-alt); padding: 15px 14px; font-weight: 600; font-size: .72rem; color: var(--text-2); text-transform: uppercase; letter-spacing: .05em; cursor: pointer; user-select: none; white-space: nowrap; border-bottom: 2px solid var(--border); transition: color .2s; font-family: var(--font-mono); }
+    .eval-table thead th:hover { color: var(--text); }
+    .eval-table .th-inner { display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .eval-table .th-inner.th-left { justify-content: flex-start; }
+    .sort-icon { font-size: .7rem; opacity: .45; }
+    .sort-icon.active { opacity: 1; color: var(--accent); }
+    .drill-down-indicator { color: var(--accent); font-size: .7rem; padding: 2px 4px; border-radius: 5px; transition: background .2s; }
+    .drill-down-indicator:hover { background: var(--accent-soft); }
+    .eval-table td { padding: 12px 14px; text-align: center; color: var(--text-2); border-bottom: 1px solid var(--border-l); white-space: nowrap; }
+    .eval-table tbody tr:last-child td { border-bottom: none; }
+    .eval-table tbody tr:hover td { background: var(--surface-2); }
+    .rank-col { width: 46px; text-align: center !important; color: var(--text-muted) !important; font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+    .model-col { text-align: left !important; min-width: 170px; }
+    .model-name-bold { font-weight: 700; color: var(--text); }
+    .score-chip { display: inline-block; min-width: 56px; padding: 4px 8px; border-radius: 7px; font-variant-numeric: tabular-nums; font-weight: 500; background: transparent; color: var(--text-2); }
+    .score-chip.chip-dual { min-width: 80px; }
+    .score-chip.is-best { background: var(--best-bg); color: var(--best-text); font-weight: 700; box-shadow: inset 0 0 0 1px var(--best-border); }
+    .sc-choice { font-weight: 600; color: var(--text); }
+    .sc-judge { color: var(--text-2); }
+    .sc-sep { margin: 0 3px; opacity: .4; }
+    .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .03em; padding: 2px 6px; border-radius: 5px; vertical-align: middle; margin-left: 5px; }
+    .badge-lvlm { background: var(--violet-soft); color: var(--violet-deep); }
+    .badge-vlm { background: var(--blue-soft); color: var(--blue-deep); }
+    .badge-pure-vision { background: var(--emerald-soft); color: var(--emerald-deep); }
+    .updated { text-align: right; font-size: .78rem; color: var(--text-muted); margin-top: 14px; font-family: var(--font-mono); }
 
-    .ds-pill {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
+    /* KNOWLEDGE BIAS (dumbbell) */
+    .kb-subtabs { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin: 0 auto 24px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 100px; padding: 5px; width: fit-content; }
+    .kb-subtab { padding: 8px 18px; border-radius: 100px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text-2); transition: all .25s; font-family: var(--font-body); white-space: nowrap; }
+    .kb-subtab:hover { color: var(--text); }
+    .kb-subtab.is-active { background: var(--surface); color: var(--text); box-shadow: 0 1px 6px rgba(40,33,20,.12); }
+    .kb-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 6px 28px; }
+    .kb-row { display: grid; grid-template-columns: 186px 1fr; gap: 26px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--border-l); }
+    .kb-row:last-child { border-bottom: none; }
+    .kb-model { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 7px; }
+    .kb-model .model-name-bold { font-size: .98rem; }
+    .kb-overall { font-family: var(--font-display); font-size: 1.95rem; font-weight: 600; line-height: 1; letter-spacing: -.02em; }
+    .kb-overall span { font-size: .5em; font-weight: 600; color: var(--text-muted); margin-left: 1px; font-family: var(--font-body); }
+    .kb-overall small { display: block; font-family: var(--font-mono); font-size: .58rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+    .kb-track { position: relative; height: 10px; border-radius: 6px; background: var(--bg-alt); box-shadow: inset 0 0 0 1px var(--border-l); margin: 6px 9px 0; }
+    .kb-band { position: absolute; top: 0; bottom: 0; border-radius: 6px; background: linear-gradient(90deg, var(--amber), var(--emerald)); opacity: .5; }
+    .kb-mean { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--accent); border-radius: 2px; z-index: 2; }
+    .kb-dot { position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -50%); border: 2px solid var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.22); z-index: 3; }
+    .kb-dot-worst { background: var(--amber); }
+    .kb-dot-best { background: var(--emerald); }
+    .kb-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 18px; font-size: .82rem; color: var(--text-2); }
+    .kb-meta .kb-hard { color: var(--text); font-weight: 600; }
+    .kb-chip { font-family: var(--font-mono); font-size: .72rem; font-weight: 600; padding: 2px 9px; border-radius: 6px; background: var(--bg-alt); border: 1px solid var(--border); color: var(--text-2); }
+    .kb-tag-consistent { background: var(--best-bg); color: var(--best-text); box-shadow: inset 0 0 0 1px var(--best-border); border-color: transparent; }
+    .kb-legend { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 22px; margin-top: 22px; font-size: .8rem; color: var(--text-2); }
+    .kb-legend > span { display: inline-flex; align-items: center; gap: 7px; }
+    .kb-key { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    .kb-key-worst { background: var(--amber); }
+    .kb-key-best { background: var(--emerald); }
+    .kb-key-mean { width: 3px; height: 13px; border-radius: 2px; background: var(--accent); }
+    .kb-legend-note { color: var(--text-muted); font-style: italic; }
+    @media (max-width: 640px) { .kb-row { grid-template-columns: 1fr; gap: 4px; } .kb-panel { padding: 6px 18px; } .kb-overall { font-size: 1.6rem; } }
 
-    .ds-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #111827;
-      line-height: 1.3;
-    }
+    /* FINDINGS CHAPTERS */
+    .chapter { margin-bottom: 34px; }
+    .chapter-head { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 22px; }
+    .chapter-numeral { flex-shrink: 0; width: 70px; height: 70px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.85rem; font-weight: 600; background: var(--bg-alt); border: 1px solid var(--border); }
+    .chapter-stage { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .chapter-title { font-family: var(--font-display); font-size: 1.7rem; font-weight: 600; line-height: 1.16; letter-spacing: -.012em; }
+    .finding-cards { display: flex; flex-direction: column; gap: 12px; padding-left: 94px; margin-top: 18px; }
+    .finding-card { display: flex; gap: 18px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 24px; cursor: pointer; transition: border-color .25s, box-shadow .25s, transform .25s; position: relative; }
+    .finding-card:hover { border-color: var(--accent); box-shadow: var(--card-shadow); transform: translateY(-2px); }
+    .fc-num { font-family: var(--font-mono); font-size: .98rem; font-weight: 600; color: var(--accent); flex-shrink: 0; padding-top: 3px; }
+    .fc-body { flex: 1; }
+    .fc-title { font-family: var(--font-display); font-size: 1.18rem; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.3; letter-spacing: -.01em; }
+    .fc-summary { font-size: .95rem; color: var(--text-2); line-height: 1.6; }
+    .fc-detail { max-height: 0; overflow: hidden; transition: max-height .45s cubic-bezier(.4,0,.2,1); }
+    .fc-detail p { font-size: .92rem; color: var(--text-2); line-height: 1.78; padding-top: 14px; margin-top: 14px; border-top: 1px dashed var(--border); }
+    .finding-card.is-open .fc-detail { max-height: 520px; }
+    .fc-toggle { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: var(--bg-alt); border: 1px solid var(--border); color: var(--accent); font-size: .8rem; transition: transform .35s, background .2s, color .2s; }
+    .finding-card.is-open .fc-toggle { transform: rotate(45deg); background: var(--accent); color: #fff; }
+    .chapter.accent-blue { --accent: var(--blue); } .chapter.accent-blue .chapter-numeral { color: var(--blue-deep); background: var(--blue-soft); border-color: transparent; }
+    .chapter.accent-amber { --accent: var(--amber); } .chapter.accent-amber .chapter-numeral { color: var(--amber-deep); background: var(--amber-soft); border-color: transparent; }
+    .chapter.accent-emerald { --accent: var(--emerald); } .chapter.accent-emerald .chapter-numeral { color: var(--emerald-deep); background: var(--emerald-soft); border-color: transparent; }
+    .chapter.accent-violet { --accent: var(--violet); } .chapter.accent-violet .chapter-numeral { color: var(--violet-deep); background: var(--violet-soft); border-color: transparent; }
+    @media (max-width: 720px) { .finding-cards { padding-left: 0; } .chapter-numeral { width: 56px; height: 56px; font-size: 1.45rem; } .chapter-head { gap: 16px; } }
 
-    .ds-link-icon {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      transition: color 0.2s;
-    }
+    /* PER-DATASET RESULTS */
+    .results-toggle { display: flex; gap: 5px; justify-content: center; margin: 0 auto 16px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 100px; padding: 5px; width: fit-content; }
+    .res-tab { padding: 9px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text-2); transition: all .25s; font-family: var(--font-body); white-space: nowrap; }
+    .res-tab:hover { color: var(--text); }
+    .res-tab.is-active { background: var(--surface); color: var(--text); box-shadow: 0 1px 6px rgba(40,33,20,.12); }
+    .results-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 30px; }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: .82rem; color: var(--text-2); font-weight: 500; font-family: var(--font-mono); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .charts-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .chart-card { min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 14px 10px; box-shadow: var(--card-shadow); transition: transform .25s; }
+    .chart-card:hover { transform: translateY(-3px); }
+    .chart-card canvas { max-width: 100%; }
+    .chart-card .ctitle { text-align: center; font-size: .8rem; font-weight: 600; color: var(--text-2); margin-top: 6px; font-family: var(--font-mono); }
+    @media (max-width: 920px) { .charts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px) { .charts-grid { grid-template-columns: minmax(0, 1fr); } }
 
-    .ds-card:hover .ds-link-icon {
-      color: #4f46e5;
-    }
+    /* DATASET */
+    .ds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .ds-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 28px; box-shadow: var(--card-shadow); transition: transform .3s, box-shadow .3s; position: relative; overflow: hidden; }
+    .ds-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; }
+    .ds-card:hover { transform: translateY(-4px); }
+    .ds-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .ds-head i { font-size: 1.2rem; }
+    .ds-head h4 { font-family: var(--font-display); font-size: 1.11rem; font-weight: 600; letter-spacing: -.01em; }
+    .ds-tags { display: flex; flex-wrap: wrap; gap: 9px; }
+    .ds-tag { font-size: .82rem; font-weight: 600; padding: 6px 13px; border-radius: 8px; transition: transform .2s; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+    .ds-tag:hover { transform: translateY(-2px); text-decoration-color: currentColor; }
+    .ds-card.nature::before { background: var(--blue); } .ds-card.nature i { color: var(--blue); } .ds-card.nature .ds-tag { background: var(--blue-soft); color: var(--blue-deep); }
+    .ds-card.industrial::before { background: var(--amber); } .ds-card.industrial i { color: var(--amber); } .ds-card.industrial .ds-tag { background: var(--amber-soft); color: var(--amber-deep); }
+    .ds-card.daily::before { background: var(--emerald); } .ds-card.daily i { color: var(--emerald); } .ds-card.daily .ds-tag { background: var(--emerald-soft); color: var(--emerald-deep); }
+    @media (max-width: 820px) { .ds-grid { grid-template-columns: 1fr; } }
 
-    /* Domain colors */
-    .ds-animals .ds-pill {
-      background: #dbeafe;
-      color: #1d4ed8;
-    }
+    /* BIBTEX */
+    .bibtex-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--card-shadow); }
+    .bibtex-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--bg-alt); border-bottom: 1px solid var(--border); }
+    .bibtex-head h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+    .bibtex-copy { display: inline-flex; align-items: center; gap: 6px; padding: 7px 15px; border-radius: 100px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); transition: color .2s; font-family: var(--font-body); }
+    .bibtex-copy:hover { color: var(--text); }
+    .bibtex-block pre { padding: 24px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-2); white-space: pre; margin: 0; }
 
-    .ds-animals::after {
-      background: #3b82f6;
-    }
+    /* FOOTER */
+    .footer { padding: 48px 0; border-top: 1px solid var(--border); text-align: center; }
+    .footer p { font-size: .82rem; color: var(--text-muted); line-height: 1.85; }
+    .footer a { color: var(--text-2); text-decoration: underline; text-underline-offset: 2px; }
 
-    .ds-plants .ds-pill {
-      background: #dcfce7;
-      color: #15803d;
-    }
+    /* SCROLL TOP */
+    .scroll-top { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: var(--scrolltop-bg); color: var(--scrolltop-color); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .3s; z-index: 90; box-shadow: 0 6px 18px rgba(40,33,20,.22); }
+    .scroll-top.visible { opacity: 1; transform: translateY(0); }
+    .scroll-top:hover { transform: translateY(-2px); }
 
-    .ds-plants::after {
-      background: #22c55e;
-    }
-
-    .ds-consumer .ds-pill {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .ds-consumer::after {
-      background: #f59e0b;
-    }
-
-    .ds-vehicles .ds-pill {
-      background: #ffe4e6;
-      color: #be123c;
-    }
-
-    .ds-vehicles::after {
-      background: #f43f5e;
-    }
-
-    .ds-medical .ds-pill {
-      background: #f3e8ff;
-      color: #7e22ce;
-    }
-
-    .ds-medical::after {
-      background: #a855f7;
-    }
+    /* REVEAL */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
   </style>
-
 </head>
 
 <body>
-  <!-- Sticky Top Navigation Bar -->
-  <nav class="navbar is-fixed-top nav-blur" role="navigation" aria-label="main navigation">
-    <div class="container is-max-widescreen is-flex is-justify-content-center">
-      <div id="navbarContent" class="is-flex is-align-items-center" style="gap: 2rem; height: 3.25rem;">
-        <a class="nav-link-refined outline-none focus:outline-none" href="#abstract">Abstract</a>
-        <a class="nav-link-refined outline-none focus:outline-none" href="#leaderboard">Leaderboard</a>
-        <a class="nav-link-refined outline-none focus:outline-none" href="#key-findings">Key Findings</a>
-        <a class="nav-link-refined outline-none focus:outline-none" href="#dataset">Dataset</a>
-        <a class="nav-link-refined outline-none focus:outline-none" href="#results">Results</a>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <img src="static/images/benchmark.svg" alt="FG-BMK logo">
+        FG-BMK
+      </div>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="#abstract">Abstract</a></li>
+          <li><a href="#leaderboard">Leaderboard</a></li>
+          <li><a href="#dataset">Dataset</a></li>
+          <li><a href="#findings">Findings</a></li>
+          <li><a href="#results">Results</a></li>
+        </ul>
+        <div class="theme-switch" onclick="toggleTheme()" title="Toggle light / dark">
+          <span class="ts-knob"></span>
+          <span class="ts-icon ts-sun"><i class="fas fa-sun"></i></span>
+          <span class="ts-icon ts-moon"><i class="fas fa-moon"></i></span>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Scroll to Top Button -->
-  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
+  <!-- HERO -->
+  <header class="hero" id="top">
+    <div class="container hero-inner">
+      <div class="hero-masthead">
+        <img class="hero-logo" src="static/images/benchmark.svg" alt="FG-BMK">
+        <h1 class="hero-title">FG<span class="dash">-</span>BMK</h1>
+      </div>
+      <p class="hero-paper-title">Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: From Evaluation to Diagnosis</p>
+      <div class="authors">
+        <span><a href="https://github.com/SEU-VIPGroup" target="_blank">Hong-Tao Yu</a><sup>1</sup></span>
+        <span>Chen-Wei Xie<sup>2</sup></span>
+        <span>Yuxin Peng<sup>3</sup></span>
+        <span>Serge Belongie<sup>4</sup></span>
+        <span><a href="http://www.weixiushen.com" target="_blank">Xiu-Shen Wei</a><sup>1&dagger;</sup></span>
+      </div>
+      <p class="affil">
+        <sup>1</sup>School of Computer Science and Engineering, School of Intelligence Science and Engineering, and Key Laboratory of New Generation Artificial Intelligence Technology and Its Interdisciplinary Applications, Southeast University, China<br>
+        <sup>2</sup>Alibaba Group &nbsp;&middot;&nbsp;
+        <sup>3</sup>Wangxuan Institute of Computer Technology, Peking University, China <br>
+        <sup>4</sup>University of Copenhagen, Denmark<br>
+        <span style="opacity:.7">&dagger; Corresponding Author</span>
+      </p>
+      <div class="hero-links">
+        <a href="https://arxiv.org/abs/2606.19053" target="_blank" class="hero-link hero-link--primary"><i class="ai ai-arxiv"></i> arXiv</a>
+        <a href="https://github.com/SEU-VIPGroup/FG-BMK" target="_blank" class="hero-link"><i class="fab fa-github"></i> Code</a>
+        <a href="#leaderboard" class="hero-link"><i class="fas fa-trophy"></i> Leaderboard</a>
+        <a href="#dataset" class="hero-link"><i class="fas fa-database"></i> Dataset</a>
+      </div>
+    </div>
+  </header>
 
+  <!-- STATS -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div class="stat"><div class="stat-num">1.01<span>M</span></div><div class="stat-label">Questions</div></div>
+        <div class="stat"><div class="stat-num">0.28<span>M</span></div><div class="stat-label">Images</div></div>
+        <div class="stat"><div class="stat-num">13</div><div class="stat-label">Data Sources</div></div>
+        <div class="stat"><div class="stat-num">5</div><div class="stat-label">Diagnostic Tasks</div></div>
+      </div>
+    </div>
+  </section>
 
+  <!-- ABSTRACT -->
+  <section class="section" id="abstract">
+    <div class="container reveal">
+      <div class="center-head">
+        <div class="kicker center">Abstract</div>
+        <h2 class="section-title">Abstract</h2>
+      </div>
+      <div class="abstract-wrap" style="margin-top: 30px;">
+        <div class="abstract-card">
+          <p class="abstract-text">
+            Recent advancements in <strong>Large Vision-Language Models (LVLMs)</strong> have demonstrated remarkable multimodal perception and reasoning capabilities. While numerous benchmarks have evaluated LVLMs from holistic or task-specific perspectives, their capabilities on <strong>fine-grained image tasks</strong>—fundamental to computer vision—remain insufficiently understood. To address this gap, we introduce <strong>FG-BMK</strong>, a comprehensive fine-grained evaluation benchmark containing <strong>1.01 million questions</strong> and <strong>0.28 million images</strong>, covering diverse scenarios from common object-centric domains to specialized domains. FG-BMK jointly evaluates dialogue-level fine-grained semantic recognition and feature-level visual discriminability through <strong>human-oriented</strong> and <strong>machine-oriented</strong> paradigms, enabling diagnostic analysis of whether LVLM failures arise from insufficient visual representations, weak visual-to-semantic grounding, or limited fine-grained knowledge. Through extensive experiments on a diverse set of representative LVLMs/VLMs, we find that current LVLMs remain <strong>inadequate fine-grained recognizers</strong>, with failures arising from intertwined bottlenecks in visual representations, semantic grounding, modality alignment, and category-level knowledge. We further analyze training-design factors for improving fine-grained capabilities and examine how visual and linguistic perturbations affect LVLM predictions—offering guidance for future data construction and model design.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <main id="main-content">
-    <section class="hero pb-0" style="padding-top: 50px;">
-      <div class="hero-body">
-        <div class="container is-max-desktop">
-          <div class="columns is-centered">
-            <div class="column has-text-centered">
-              <!-- TODO: Replace with your paper title -->
-              <h1 class="title is-1 publication-title"
-                style="display: flex; align-items: center; justify-content: center; gap: 15px;">
-                <img src="static/images/benchmark.svg" alt="Logo" style="width: 1em;">
-                FG-BMK
-              </h1>
-              <!-- Subtitle -->
-              <h2 class="title is-3 publication-title"
-                style="font-weight: 500; color: #374151; max-width: 900px; margin: 0 auto; line-height: 1.4;">
-                Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation
-              </h2>
+  <div class="divider-rule"></div>
 
-              <div class="is-size-5 publication-authors" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">
-                <span class="author-block">
-                  <a href="https://github.com/SEU-VIPGroup" target="_blank">Hong-Tao Yu</a><sup>1</sup>,</span>
-                <span class="author-block">
-                  Chen-Wei Xie<sup>2</sup>,</span>
-                <span class="author-block">
-                  Yuxin Peng<sup>3</sup>,</span>
-                <span class="author-block">
-                  Serge Belongie<sup>4</sup>,</span>
-                <span class="author-block">
-                  <a href="http://www.weixiushen.com" target="_blank">Xiu-Shen Wei</a><sup>1†</sup></span>
-              </div>
+  <!-- OVERVIEW / SAMPLE -->
+  <section class="section" id="sample">
+    <div class="container reveal center-head">
+      <div class="kicker center">Overview</div>
+      <h2 class="section-title">FG-BMK</h2>
+      <p class="section-lead" style="max-width: 840px; margin: 16px auto 0;">
+        FG-BMK probes fine-grained ability through <strong>two complementary evaluation paradigms</strong>—human-oriented dialogue recognition and machine-oriented feature discriminability—and turns them into a <strong>step-by-step diagnosis</strong> that pinpoints where, and why, LVLMs fall short.
+      </p>
+    </div>
+    <div class="figure-wide reveal">
+      <div class="figure-card">
+        <img src="static/images/intro.png" alt="FG-BMK overview: five fine-grained tasks with sample data and representative findings">
+      </div>
+    </div>
+  </section>
 
-              <div class="is-size-6 publication-authors" style="line-height: 1.6;">
-                <span class="author-block"><sup>1</sup>School of Computer Science and Engineering, School of Intelligence Science and Engineering, and Key Laboratory of New Generation Artificial Intelligence Technology and Its Interdisciplinary Applications, Southeast University, China</span><br>
-                <span class="author-block"><sup>2</sup>Alibaba Group</span>
-                <span class="author-block"><sup>3</sup>Wangxuan Institute of Computer Technology, Peking University,
-                  China</span><br>
-                <span class="author-block"><sup>4</sup>University of Copenhagen, Denmark</span><br>
-                <span class="eql-cntrb"><small><sup>†</sup>Corresponding Author</small></span>
-              </div>
+  <div class="divider-rule"></div>
 
-              <div class="column has-text-centered">
-                <div class="publication-links">
-                  <!-- TODO: Update with your arXiv paper ID -->
-                  <span class="link-block">
-                    <a href="https://arxiv.org/abs/2504.14988" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="ai ai-arxiv"></i>
-                      </span>
-                      <span>arXiv</span>
-                    </a>
-                  </span>
+  <!-- LEADERBOARD -->
+  <section class="section" id="leaderboard">
+    <div class="container reveal">
+      <div class="center-head">
+        <div class="kicker center">Leaderboard</div>
+        <h2 class="section-title">Leaderboard</h2>
+      </div>
+      <p class="leaderboard-footnote" id="leaderboard-footnote" style="margin-top: 18px;">Hierarchical granularity recognition (human-oriented). Values are <b>Multiple-Choice / True-or-False</b> accuracy; click CUB-200 or iNat2021 to expand taxonomic levels.</p>
 
-                  <span class="link-block">
-                    <a href="#dataset" class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-database"></i>
-                      </span>
-                      <span>Dataset</span>
-                    </a>
-                  </span>
+      <div class="eval-tabs">
+        <button class="eval-tab is-active" onclick="switchTab(event, 'tab-hierarchical')">Human · Hierarchical</button>
+        <button class="eval-tab" onclick="switchTab(event, 'tab-attribute')">Human · Attribute</button>
+        <button class="eval-tab" onclick="switchTab(event, 'tab-knowledge')">Human · Knowledge Bias</button>
+        <button class="eval-tab" onclick="switchTab(event, 'tab-classification')">Machine · Classification</button>
+        <button class="eval-tab" onclick="switchTab(event, 'tab-retrieval')">Machine · Retrieval</button>
+      </div>
 
-                  <!-- TODO: Replace with your GitHub repository URL -->
-                  <span class="link-block">
-                    <a href="https://github.com/SEU-VIPGroup/FG-BMK" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fab fa-github"></i>
-                      </span>
-                      <span>Code</span>
-                    </a>
-                  </span>
+      <div id="tab-hierarchical" class="tab-content is-active">
+        <button class="back-btn" id="hierarchical-back" style="display:none;" onclick="backToOverview('hierarchical')"><i class="fas fa-arrow-left"></i> Back to overview</button>
+        <div class="table-wrap"><table class="eval-table" id="table-hierarchical"><thead id="hierarchical-thead"></thead><tbody id="hierarchical-tbody"></tbody></table></div>
+      </div>
+      <div id="tab-attribute" class="tab-content">
+        <button class="back-btn" id="attribute-back" style="display:none;" onclick="backToOverview('attribute')"><i class="fas fa-arrow-left"></i> Back to overview</button>
+        <div class="table-wrap"><table class="eval-table" id="table-attribute"><thead id="attribute-thead"></thead><tbody id="attribute-tbody"></tbody></table></div>
+      </div>
+      <div id="tab-knowledge" class="tab-content">
+        <div class="kb-subtabs" id="kb-subtabs"></div>
+        <div class="kb-panel" id="kb-panel"></div>
+        <div class="kb-legend">
+          <span><span class="kb-key kb-key-worst"></span> Hardest category</span>
+          <span><span class="kb-key kb-key-mean"></span> Overall accuracy</span>
+          <span><span class="kb-key kb-key-best"></span> Easiest category</span>
+          <span class="kb-legend-note">A wider band = stronger knowledge bias (less consistent across categories).</span>
+        </div>
+      </div>
+      <div id="tab-classification" class="tab-content">
+        <div class="table-wrap"><table class="eval-table" id="table-classification"><thead id="classification-thead"></thead><tbody id="classification-tbody"></tbody></table></div>
+      </div>
+      <div id="tab-retrieval" class="tab-content">
+        <div class="table-wrap"><table class="eval-table" id="table-retrieval"><thead id="retrieval-thead"></thead><tbody id="retrieval-tbody"></tbody></table></div>
+      </div>
 
+      <div class="updated">Last updated · 05 / 2026</div>
+    </div>
+  </section>
 
-                  <span class="link-block">
-                    <a href="#leaderboard" class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-trophy"></i>
-                      </span>
-                      <span>Leaderboard</span>
-                    </a>
-                  </span>
-                </div>
-              </div>
-            </div>
+  <div class="divider-rule"></div>
+
+  <!-- DATASET -->
+  <section class="section" id="dataset">
+    <div class="container reveal">
+      <div class="center-head">
+        <div class="kicker center">Dataset</div>
+        <h2 class="section-title">Thirteen
+ fine-grained datasets</h2>
+        <p class="section-lead" style="margin-top: 16px; margin-bottom: 38px;">Spanning multiple domains &middot; 0.28M+ images &middot; 1.01M+ questions.</p>
+      </div>
+      <div class="ds-grid">
+        <div class="ds-card nature">
+          <div class="ds-head"><i class="fas fa-leaf"></i><h4>Nature &amp; Biology</h4></div>
+          <div class="ds-tags">
+            <a href="https://www.vision.caltech.edu/datasets/cub_200_2011/" target="_blank" class="ds-tag">CUB-200</a>
+            <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/" target="_blank" class="ds-tag">Stanford Dogs</a>
+            <a href="https://github.com/visipedia/inat_comp/tree/master/2021" target="_blank" class="ds-tag">iNat2021</a>
+            <a href="https://www.robots.ox.ac.uk/~vgg/data/flowers/102/" target="_blank" class="ds-tag">Flowers-102</a>
+            <a href="https://github.com/ustc-vim/vegfru" target="_blank" class="ds-tag">VegFru</a>
+          </div>
+        </div>
+        <div class="ds-card industrial">
+          <div class="ds-head"><i class="fas fa-industry"></i><h4>Industrial &amp; Manufactured</h4></div>
+          <div class="ds-tags">
+            <a href="https://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/" target="_blank" class="ds-tag">FGVC Aircraft</a>
+            <a href="https://www.kaggle.com/datasets/eduardo4jesus/stanford-cars-dataset" target="_blank" class="ds-tag">Stanford Cars</a>
+            <a href="https://products-10k.github.io/" target="_blank" class="ds-tag">Products-10K</a>
+            <a href="https://tianchi.aliyun.com/dataset/dataDetail?dataId=110147" target="_blank" class="ds-tag">Wine</a>
+          </div>
+        </div>
+        <div class="ds-card daily">
+          <div class="ds-head"><i class="fas fa-shopping-bag"></i><h4>Daily Life &amp; Specialized</h4></div>
+          <div class="ds-tags">
+            <a href="http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html" target="_blank" class="ds-tag">DeepFashion</a>
+            <a href="https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/" target="_blank" class="ds-tag">Food-101</a>
+            <a href="https://skincon-dataset.github.io/" target="_blank" class="ds-tag">SkinCon</a>
+            <a href="https://huggingface.co/datasets/amistele/MTARSI-fixed" target="_blank" class="ds-tag">MTARSI</a>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Top Highlights Dashboard (Hero Teaser Replacement) -->
-      <section class="hero teaser" style="margin-top: -30px; margin-bottom: 20px;">
-        <div class="container is-max-desktop">
-          <div class="hero-body">
-            <div class="columns is-multiline is-centered is-variable is-6">
-              <!-- Scale Card -->
-              <div class="column is-one-third is-flex">
-                <div class="abstract-box feature-card is-flex-grow-1"
-                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px !important; width: 100%; height: 100%;">
+  <div class="divider-rule"></div>
 
-                  <!-- Icon Zone -->
-                  <div
-                    style="height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i class="fas fa-database" style="font-size: 2.2rem; color: #4f46e5;"></i>
-                  </div>
+  <!-- KEY FINDINGS — 4 diagnostic chapters -->
+  <section class="section" id="findings">
+    <div class="container reveal">
+      <div class="kicker">Key Findings</div>
+      <h2 class="section-title">From assessment to diagnosis,<br><span class="lead">improvement, and robustness</span></h2>
+      <div id="findings-root" style="margin-top: 40px;"></div>
+    </div>
+  </section>
 
-                  <!-- Title Zone -->
-                  <div
-                    style="height: 4.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                    <h3 class="title is-5" style="margin: 0;">Massive Scale</h3>
-                  </div>
+  <div class="divider-rule"></div>
 
-                  <!-- Content Zone -->
-                  <div class="is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-center"
-                    style="width: 100%;">
-                    <p style="font-size: 1.05rem; color: #4f46e5; font-weight: 800; line-height: 1.4;">1.01M+ Questions
-                    </p>
-                    <p style="font-size: 1.05rem; color: #4f46e5; font-weight: 800; line-height: 1.4;">280K+ Images</p>
-                    <p style="font-size: 1.05rem; color: #4f46e5; font-weight: 800; line-height: 1.4;">13 Data Source
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Dual Evaluation Card -->
-              <div class="column is-one-third is-flex">
-                <div class="abstract-box feature-card is-flex-grow-1"
-                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px !important; width: 100%; height: 100%;">
-
-                  <!-- Icon Zone -->
-                  <div
-                    style="height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i class="fas fa-balance-scale" style="font-size: 2.2rem; color: #10b981;"></i>
-                  </div>
-
-                  <!-- Title Zone -->
-                  <div
-                    style="height: 4.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                    <h3 class="title is-5" style="margin: 0;">Dual Evaluation</h3>
-                  </div>
-
-                  <!-- Content Zone -->
-                  <div class="is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-center"
-                    style="width: 100%;">
-                    <p style="font-size: 0.95rem; color: #64748b; line-height: 1.6;">
-                      <b>Human-oriented:</b><br>Dialogue-based Understanding
-                    </p>
-                    <p style="font-size: 0.95rem; color: #64748b; line-height: 1.6;"><b>Machine-oriented:</b><br>Feature
-                      Representation</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Diverse Tasks Card -->
-              <div class="column is-one-third is-flex">
-                <div class="abstract-box feature-card is-flex-grow-1"
-                  style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px !important; width: 100%; height: 100%;">
-
-                  <!-- Icon Zone -->
-                  <div
-                    style="height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i class="fas fa-microscope" style="font-size: 2.2rem; color: #f59e0b;"></i>
-                  </div>
-
-                  <!-- Title Zone -->
-                  <div
-                    style="height: 4.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                    <h3 class="title is-5" style="margin: 0;">Diverse Fine-Grained Tasks</h3>
-                  </div>
-
-                  <!-- Content Zone -->
-                  <div class="is-flex-grow-1 is-flex is-flex-direction-column is-justify-content-center"
-                    style="width: 100%;">
-                    <p style="font-size: 0.9rem; color: #64748b; line-height: 1.6; margin-bottom: 0;">
-                      Attribute Recognition · Knowledge Bias<br>
-                      Hierarchical Granularity · Image Retrieval<br>
-                      Image Classification
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <h2 class="subtitle has-text-centered mt-5" style="font-size: 1.1rem; font-style: italic;">
-              "A comprehensive benchmark revealing LVLMs' limitations on <b>fine-grained</b> visual tasks."
-            </h2>
-          </div>
-        </div>
-      </section>
-
-      <!-- Paper abstract -->
-      <section class="section" id="abstract">
-        <div class="container is-max-desktop">
-          <div class="abstract-box">
-            <h2 class="title is-3 has-text-centered">Abstract</h2>
-            <div class="content has-text-justified">
-              <p>
-                Recent advancements in Large Vision-Language Models (LVLMs) have demonstrated remarkable multimodal
-                perception capabilities. However, while numerous evaluation studies have emerged, <strong> fine-grained
-                  image tasks</strong>—fundamental to computer vision—remain largely unexplored.
-                To fill this gap, we introduce a comprehensive fine-grained evaluation benchmark,
-                <strong>FG-BMK</strong>,
-                comprising <strong> 1.01 million questions</strong> and <strong>0.28 million images</strong>. Our
-                evaluation systematically examines LVLMs from both human-oriented (semantic recognition) and
-                machine-oriented (feature representation) perspectives.
-                Through extensive experiments on twelve representative LVLMs/VLMs, this work provides critical insights
-                into the limitations of current models and offers guidance for future data construction and architecture
-                design.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- End paper abstract -->
-
-      <!-- Core Evaluation Results -->
-      <section class="section" id="leaderboard">
-        <div class="container is-max-widescreen leaderboard-container">
-          <h2 class="title is-3 has-text-centered" style="margin-bottom: 0.5rem;">Leaderboard</h2>
-          <p class="has-text-centered" id="leaderboard-footnote"
-            style="color: #64748b; margin-bottom: 2.5rem; font-size: 1.1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-            Accuracy performance on the Attribute Recognition task within the human-oriented evaluation.
-          </p>
-
-          <div class="evaluation-tabs-container">
-            <!-- Pill-shaped Tabs -->
-            <div class="evaluation-tabs">
-              <button class="eval-tab is-active" onclick="switchTab(event, 'tab-attribute')">Human: Attribute</button>
-              <button class="eval-tab" onclick="switchTab(event, 'tab-hierarchical')">Human: Hierarchical</button>
-              <button class="eval-tab" onclick="switchTab(event, 'tab-classification')">Machine:
-                Classification</button>
-              <button class="eval-tab" onclick="switchTab(event, 'tab-retrieval')">Machine: Retrieval</button>
-            </div>
-
-            <!-- Tab 1: Machine-Oriented (Classification) -->
-            <div id="tab-classification" class="tab-content">
-              <div class="evaluation-card table-wrapper-scrollable" id="classification-table-wrapper">
-                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
-                  id="table-classification">
-                  <thead id="classification-thead">
-                    <!-- Dynamic Headers -->
-                  </thead>
-                  <tbody id="classification-tbody">
-                    <!-- Dynamic Rows -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Tab 2: Human-Oriented (Attribute) -->
-            <div id="tab-attribute" class="tab-content is-active">
-              <!-- Drill-down Navigation -->
-              <div id="attribute-back-btn-container" class="back-btn-container"
-                style="display: none; margin-bottom: 1.5rem;">
-                <button class="back-to-overview-btn" onclick="backToOverview('attribute')">
-                  <i class="fas fa-arrow-left"></i> Back to Overview
-                </button>
-              </div>
-
-              <div class="evaluation-card table-wrapper-scrollable" id="attribute-table-wrapper">
-                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
-                  id="table-attribute">
-                  <thead id="attribute-thead">
-                    <!-- Dynamic Headers -->
-                  </thead>
-                  <tbody id="attribute-tbody">
-                    <!-- Dynamic Rows -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Tab 3: Human-Oriented (Hierarchical) -->
-            <div id="tab-hierarchical" class="tab-content">
-              <!-- Drill-down Navigation -->
-              <div id="hierarchical-back-btn-container" class="back-btn-container"
-                style="display: none; margin-bottom: 1.5rem;">
-                <button class="back-to-overview-btn" onclick="backToOverview('hierarchical')">
-                  <i class="fas fa-arrow-left"></i> Back to Overview
-                </button>
-              </div>
-
-              <div class="evaluation-card table-wrapper-scrollable" id="hierarchical-table-wrapper">
-                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
-                  id="table-hierarchical">
-                  <thead id="hierarchical-thead">
-                    <!-- Dynamic Headers -->
-                  </thead>
-                  <tbody id="hierarchical-tbody">
-                    <!-- Dynamic Rows -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Tab 3: Machine-Oriented (Retrieval) -->
-            <div id="tab-retrieval" class="tab-content">
-              <div class="evaluation-card table-wrapper-scrollable" id="retrieval-table-wrapper">
-                <table class="evaluation-table compact-table w-full border-separate border-spacing-0"
-                  id="table-retrieval">
-                  <thead id="retrieval-thead">
-                    <!-- Dynamic Headers -->
-                  </thead>
-                  <tbody id="retrieval-tbody">
-                    <!-- Dynamic Rows -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="has-text-right mt-4" style="font-size: 0.8rem; color: #94a3b8;">
-            Last updated: 05/2026
-          </div>
-        </div>
-      </section>
-
-
-      <!-- Key Findings Module -->
-      <section class="section key-findings-section" id="key-findings">
-        <div class="container is-max-desktop">
-          <div class="has-text-centered" style="margin-bottom: 3rem;">
-            <h2 class="title is-3">Key Findings</h2>
-            <p class="whitespace-nowrap"
-              style="color: #64748b; font-size: 1.05rem; max-width: 1200px; margin: 0.5rem auto 0; text-align: center;">
-              Representative findings derived from the human-oriented and machine-oriented evaluation of LVLMs/VLMs on
-              FG-BMK.
-            </p>
-          </div>
-
-          <!-- Human-Oriented Evaluation -->
-          <div style="margin-bottom: 2.5rem;">
-            <h3 class="title is-5"
-              style="margin-bottom: 1.2rem; color: #1f2937; border-left: 4px solid #3b82f6; padding-left: 12px;">
-              Human-Oriented Evaluation
-            </h3>
-
-            <div class="findings-list" id="human-findings-list">
-              <!-- Dynamic Human-Oriented Findings -->
-            </div>
-          </div>
-
-          <!-- Machine-Oriented Evaluation -->
-          <div>
-            <h3 class="title is-5"
-              style="margin-bottom: 1.2rem; color: #1f2937; border-left: 4px solid #10b981; padding-left: 12px;">
-              Machine-Oriented Evaluation
-            </h3>
-
-            <div class="findings-list" id="machine-findings-list">
-              <!-- Dynamic Machine-Oriented Findings -->
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Why FG-BMK? Section -->
-      <section class="section" id="why-fg-bmk" style="padding: 4rem 1.5rem;">
-        <div class="container is-max-desktop">
-          <h2 class="title is-3 has-text-centered" style="margin-bottom: 2.5rem;">Why FG-BMK?</h2>
-          <p class="text-center text-gray-500 mt-4 px-4 text-sm font-medium">
-            "Our Fine-Grained Evaluation Framework (FG-BMK): a new dual perspective (human-oriented and
-            machine-oriented) to comprehensively assess models' fine-grained visual capabilities."
-          </p>
-          <br>
-          <div class="flex justify-center w-full">
-            <img src="static/images/intro.png" alt="Why FG-BMK?"
-              class="w-full max-w-3xl h-auto rounded-xl shadow-lg border border-gray-100 mx-auto">
-          </div>
-
-        </div>
-      </section>
-
-      <section class="section" id="dataset" style="padding-top: 40px; padding-bottom: 40px;">
-        <div class="container is-max-widescreen">
-          <h2 class="title is-3 has-text-centered" style="margin-bottom: 0.5rem;">Dataset</h2>
-          <p class="has-text-centered" style="color: var(--text-secondary); margin-bottom: 3rem; font-size: 1rem;">
-            12 fine-grained datasets spanning multiple domains &bull; 280K+ images &bull; 1.01M+ questions
-          </p>
-
-          <div class="dataset-dashboard dataset-grid" style="max-width: 1024px; margin: 0 auto; padding: 0 1rem;">
-            <!-- Animals -->
-            <div class="dataset-domain-card domain-animals" style="min-width: 0;">
-              <div class="domain-header"
-                style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
-                <div class="domain-icon" style="color: #3b82f6; margin-right: 12px; font-size: 1.2rem;"><i
-                    class="fas fa-leaf"></i></div>
-                <h3 class="domain-title-refined" style="margin: 0; font-size: 1.1rem;">Nature & Biology</h3>
-              </div>
-              <div class="tags" style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <a href="https://www.vision.caltech.edu/datasets/cub_200_2011/"
-                  class="tag is-info is-light dataset-tag-refined" target="_blank">CUB-200</a>
-                <a href="http://vision.stanford.edu/aditya86/ImageNetDogs/"
-                  class="tag is-info is-light dataset-tag-refined" target="_blank">Stanford Dogs</a>
-                <a href="https://github.com/visipedia/inat_comp/tree/master/2021"
-                  class="tag is-info is-light dataset-tag-refined" target="_blank">iNat2021</a>
-                <a href="https://www.robots.ox.ac.uk/~vgg/data/flowers/102/"
-                  class="tag is-info is-light dataset-tag-refined" target="_blank">Flowers 102</a>
-                <a href="https://github.com/zhoudaxia241/VegFru" class="tag is-info is-light dataset-tag-refined"
-                  target="_blank">VegFru</a>
-              </div>
-            </div>
-
-            <!-- Industrial -->
-            <div class="dataset-domain-card domain-vehicles" style="min-width: 0;">
-              <div class="domain-header"
-                style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
-                <div class="domain-icon" style="color: #cf3a3a; margin-right: 12px; font-size: 1.2rem;"><i
-                    class="fas fa-industry"></i>
-                </div>
-                <h3 class="domain-title-refined" style="margin: 0; font-size: 1.1rem;">Industrial & Manufactured</h3>
-              </div>
-              <div class="tags" style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <a href="https://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/"
-                  class="tag is-danger is-light dataset-tag-refined" target="_blank">FGVC Aircraft</a>
-                <a href="https://www.kaggle.com/datasets/eduardo4jesus/stanford-cars-dataset"
-                  class="tag is-danger is-light dataset-tag-refined" target="_blank">Stanford Cars</a>
-                <a href="https://products-10k.github.io/" class="tag is-danger is-light dataset-tag-refined"
-                  target="_blank">Products-10K</a>
-                <a href="https://tianchi.aliyun.com/dataset/dataDetail?dataId=110147"
-                  class="tag is-danger is-light dataset-tag-refined" target="_blank">Wine</a>
-              </div>
-            </div>
-
-            <!-- Daily Life -->
-            <div class="dataset-domain-card domain-consumer" style="min-width: 0;">
-              <div class="domain-header"
-                style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
-                <div class="domain-icon" style="color: #16a34a; margin-right: 12px; font-size: 1.2rem;"><i
-                    class="fas fa-shopping-bag"></i>
-                </div>
-                <h3 class="domain-title-refined" style="margin: 0; font-size: 1.1rem;">Daily Life & Specialized</h3>
-              </div>
-              <div class="tags" style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <a href="http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html"
-                  class="tag is-success is-light dataset-tag-refined" target="_blank">DeepFashion</a>
-                <a href="https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/"
-                  class="tag is-success is-light dataset-tag-refined" target="_blank">Food-101</a>
-                <a href="https://skincon-dataset.github.io/" class="tag is-success is-light dataset-tag-refined"
-                  target="_blank">SkinCon</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-
-      <div class="columns is-centered is-multiline" style="gap: 30px;">
+  <!-- PER-DATASET RESULTS -->
+  <section class="section" id="results">
+    <div class="container reveal">
+      <div class="center-head">
+        <div class="kicker center">Machine-Oriented Results</div>
+        <h2 class="section-title">Per-dataset visual discriminability</h2>
+        <p class="section-lead" style="margin-top: 16px; margin-bottom: 30px;">Seven representative vision backbones across twelve fine-grained datasets. Contrastively-trained encoders (EVA-CLIP, DINOv2, InternVL) consistently lead.</p>
       </div>
-    </section>
 
-
-
-
-    <!-- Per-Dataset Results (MMMU-style) -->
-    <section class="section" id="results">
-      <div class="container is-max-widescreen">
-        <h2 class="title is-3 has-text-centered">Per-Dataset Results</h2>
-        <p class="has-text-centered" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto 1.5rem;">
-          We compare the performance of 7 representative vision models across 12 fine-grained datasets.
-          Models with contrastive training (EVA-CLIP, DINOv2) consistently outperform others.
-        </p>
-
-        <!-- Unified Legend for all Per-Dataset Charts -->
-        <div class="results-legend"
-          style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 2.5rem; padding: 10px; background: rgba(255,255,255,0.4); border-radius: 12px; border: 1px solid rgba(226, 232, 240, 0.6);">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #94a3b8;"></span>
-            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">EVA-CLIP</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #0d9488;"></span>
-            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">CoCa</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #4f46e5;"></span>
-            <span style="font-size: 0.85rem; font-weight: 600; color: #1e293b;">DINOv2</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;"></span>
-            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">BEiT3</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f43f5e;"></span>
-            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">LLaVA</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #8b5cf6;"></span>
-            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">InternVL</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span>
-            <span style="font-size: 0.85rem; font-weight: 500; color: #64748b;">Qwen</span>
-          </div>
-        </div>
-
-
-        <!-- Toggle Buttons -->
-        <div class="evaluation-tabs-container">
-          <div class="pill-tabs-container">
-            <button id="btn-cls" class="eval-tab is-active bg-gray-900 text-white shadow" onclick="switchView('cls')">Classification (Top-1
-              Acc%)</button>
-            <button id="btn-retri" class="eval-tab text-gray-600 hover:text-gray-900" onclick="switchView('retri')">Retrieval (mAP%)</button>
-          </div>
-        </div>
-
-        <!-- Charts Grid -->
-        <div class="columns is-multiline is-centered" id="charts-grid">
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-cub"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">CUB-200</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-dogs"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Stanford Dogs</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-cars"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Stanford Cars</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-aircraft"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">FGVC Aircraft</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-flowers"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Flowers-102</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-inat"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">iNat2021</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-food"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Food-101</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-clothes"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">DeepFashion</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-vegfru"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">VegFru</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-products"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Products-10K</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-skincon"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">SkinCon</p>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="abstract-box" style="padding:15px !important;"><canvas id="chart-wine"></canvas>
-              <p class="has-text-centered" style="font-size:0.8rem;font-weight:600;margin-top:6px;">Wine</p>
-            </div>
-          </div>
-        </div>
-
+      <div class="results-toggle">
+        <button id="btn-cls" class="res-tab is-active" onclick="switchView('cls')">Classification · Top-1 Acc</button>
+        <button id="btn-retri" class="res-tab" onclick="switchView('retri')">Retrieval · mAP</button>
       </div>
-    </section>
-    <!-- End Per-Dataset Results -->
 
+      <div class="results-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#60a5fa"></span>EVA-CLIP</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>CoCa</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#6366f1"></span>DINOv2</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>BEiT3</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f43f5e"></span>LLaVA</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>InternVL</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#34d399"></span>Qwen</div>
+      </div>
 
+      <div class="charts-grid">
+        <div class="chart-card"><canvas id="chart-cub"></canvas><div class="ctitle">CUB-200</div></div>
+        <div class="chart-card"><canvas id="chart-dogs"></canvas><div class="ctitle">Stanford Dogs</div></div>
+        <div class="chart-card"><canvas id="chart-cars"></canvas><div class="ctitle">Stanford Cars</div></div>
+        <div class="chart-card"><canvas id="chart-aircraft"></canvas><div class="ctitle">FGVC Aircraft</div></div>
+        <div class="chart-card"><canvas id="chart-flowers"></canvas><div class="ctitle">Flowers-102</div></div>
+        <div class="chart-card"><canvas id="chart-inat"></canvas><div class="ctitle">iNat2021</div></div>
+        <div class="chart-card"><canvas id="chart-food"></canvas><div class="ctitle">Food-101</div></div>
+        <div class="chart-card"><canvas id="chart-clothes"></canvas><div class="ctitle">DeepFashion</div></div>
+        <div class="chart-card"><canvas id="chart-vegfru"></canvas><div class="ctitle">VegFru</div></div>
+        <div class="chart-card"><canvas id="chart-products"></canvas><div class="ctitle">Products-10K</div></div>
+        <div class="chart-card"><canvas id="chart-skincon"></canvas><div class="ctitle">SkinCon</div></div>
+        <div class="chart-card"><canvas id="chart-wine"></canvas><div class="ctitle">Wine</div></div>
+      </div>
+    </div>
+  </section>
 
-    <!--BibTex citation -->
-    <section class="section" id="BibTeX">
-      <div class="container is-max-desktop content">
-        <div class="bibtex-header">
-          <h2 class="title">BibTeX</h2>
-          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-            <i class="fas fa-copy"></i>
-            <span class="copy-text">Copy</span>
-          </button>
+  <div class="divider-rule"></div>
+
+  <!-- BIBTEX -->
+  <section class="section" id="bibtex">
+    <div class="container reveal">
+      <div class="center-head">
+        <div class="kicker center">Citation</div>
+        <h2 class="section-title" style="margin-bottom: 26px;">BibTeX</h2>
+      </div>
+      <div class="bibtex-block">
+        <div class="bibtex-head">
+          <h3>Cite this work</h3>
+          <button class="bibtex-copy" onclick="copyBibTeX()"><i class="fas fa-copy"></i> Copy</button>
         </div>
-        <pre id="bibtex-code"><code>@inproceedings{yu2026fgbmk,
-  title={Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation},
-  author={Yu, Hong-Tao and Peng, Yuxin and Belongie, Serge and Wei, Xiu-Shen},
-  booktitle={International Conference on Learning Representations (ICLR)},
-  year={2026}
+        <pre id="bibtex-code"><code>@article{yu2026fgbmk,
+  title   = {Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: From Evaluation to Diagnosis},
+  author  = {Yu, Hong-Tao and Xie, Chen-Wei and Peng, Yuxin and Belongie, Serge and Wei, Xiu-Shen},
+  journal = {arXiv preprint arXiv:2606.19053},
+  year    = {2026}
+}
+
+@inproceedings{yu2026fgbmk_iclr,
+  title     = {Benchmarking Large Vision-Language Models on Fine-Grained Image Tasks: A Comprehensive Evaluation},
+  author    = {Yu, Hong-Tao and Peng, Yuxin and Belongie, Serge and Wei, Xiu-Shen},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026}
 }</code></pre>
       </div>
-    </section>
-    <!--End BibTex citation -->
+    </div>
+  </section>
 
+  <footer class="footer">
+    <div class="container">
+      <p>
+        <strong>FG-BMK</strong> &middot; Southeast University &amp; Alibaba Group &amp; Peking University &amp; University of Copenhagen<br>
+        Journal extension of the ICLR 2026 paper. Page design inspired by the
+        <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+        Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+      </p>
+    </div>
+  </footer>
 
-    <footer class="footer">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-8">
-            <div class="content">
-
-              <p>
-                This webpage presents the <strong>FG-BMK</strong> benchmark project.
-                The content is based on the research paper "Benchmarking Large Vision-Language Models on Fine-Grained
-                Image Tasks: A Comprehensive Evaluation".
-                This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
-                  target="_blank">Academic Project Page Template</a>.
-                You are free to borrow the source code of this website, we just ask that you link back to this page in
-                the footer. <br> This website is licensed under a <a rel="license"
-                  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-                  Commons Attribution-ShareAlike 4.0 International License</a>.
-              </p>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Statcounter tracking code -->
-
-    <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
-
-    <!-- End of Statcounter Code -->
+  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top"><i class="fas fa-chevron-up"></i></button>
 
 </body>
 

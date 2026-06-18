@@ -1,0 +1,132 @@
+{
+  "chapters": [
+    {
+      "id": "assess",
+      "numeral": "I",
+      "stage": "Assess",
+      "question": "How well do current LVLMs recognize fine-grained categories?",
+      "title": "LVLMs Remain Inadequate Fine-Grained Recognizers",
+      "accent": "blue",
+      "summary": "Across taxonomy granularity, specialist comparison, and attribute perception, a consistent recognition gap emerges: general-purpose LVLMs are not yet reliable fine-grained recognizers.",
+      "findings": [
+        {
+          "id": "f1",
+          "n": 1,
+          "title": "Accuracy collapses as categories grow finer",
+          "summary": "LVLMs struggle to distinguish excessively fine-grained categories.",
+          "detail": "Taking InternVL3 as a representative example on CUB-200-2011, accuracy stays near-perfect at the class level (99.76% multiple-choice / 99.77% true-false), drops to 90.75% at the genus level, and falls to 61.18% / 62.48% at the species level. The model handles coarse semantic distinctions well but becomes far less reliable when separating closely related subordinate categories — a degradation observed consistently across other LVLMs."
+        },
+        {
+          "id": "f2",
+          "n": 2,
+          "title": "Still behind fine-grained specialists",
+          "summary": "LVLMs do not outperform models tailored for fine-grained recognition.",
+          "detail": "Under both short-answer evaluation and linear probing, LVLMs trail dedicated fine-grained models. On FGVC Aircraft, LVLMs reach 66.19% (short-answer) and 78.88% (linear probe), while a tailored model attains 95.40%; similar gaps appear on Stanford Dogs and Stanford Cars. The gap reflects different optimization goals — specialists explicitly model local, part-level, and hierarchical cues (e.g., CAP's context-aware attentional pooling), whereas the standard ViT+MLP+LLM stack does not."
+        },
+        {
+          "id": "f3",
+          "n": 3,
+          "title": "Uneven and often weak attribute perception",
+          "summary": "LVLMs leave significant room for improvement in recognizing fine-grained attributes.",
+          "detail": "Performance is highly uneven across attribute types. InternVL3 and Qwen2.5-VL reach 50.13% and 45.12% average accuracy for pattern recognition, but only 30.95% and 29.30% for shape. A few attributes score high, yet most remain unreliable and some part-level attributes (e.g., tail shape) drop to ~10%. Because correct categories often hinge on subtle combinations of color, shape, pattern, and part-level cues, these attribute weaknesses directly limit category-level reasoning."
+        }
+      ]
+    },
+    {
+      "id": "diagnose",
+      "numeral": "II",
+      "stage": "Diagnose",
+      "question": "Where do these fine-grained failures actually originate?",
+      "title": "Bottlenecks Behind the Failures",
+      "accent": "amber",
+      "summary": "By jointly probing feature-level discriminability and dialogue-level recognition, failures trace to four intertwined bottlenecks: visual representation, semantic grounding, modality alignment, and category-level knowledge.",
+      "findings": [
+        {
+          "id": "f4",
+          "n": 4,
+          "title": "In specialized domains, semantics is the bottleneck",
+          "summary": "Semantic understanding, rather than visual discrimination, limits LVLMs in specialized domains.",
+          "detail": "On common datasets (FGVC Aircraft, Stanford Dogs), weak visual discriminability is the main limiter — e.g., Qwen2.5-VL reaches 94.84% multiple-choice but only 62.07% linear-probe accuracy. In specialized domains (remote sensing MTARSI, dermatology SkinCon) the pattern flips: features stay highly discriminable under linear probing (LLaVA 94.79% on MTARSI) yet dialogue accuracy collapses (60.32% / 71.60%). The model can separate the categories visually but cannot map those cues to the right concepts, owing to scarce domain concepts in pre-training."
+        },
+        {
+          "id": "f5",
+          "n": 5,
+          "title": "Discriminability does not imply grounding",
+          "summary": "Fine-grained visual representations do not imply fine-grained semantic grounding.",
+          "detail": "Using unified understanding-generation models as a testbed, linear probing on original images shows strong discriminability, but probing on the models' own category-conditioned generations drops sharply (e.g., BLIP3-o falls from 89.92% to 73.65% on CUB-200-2011 and from 79.05% to 55.87% on FGVC Aircraft). The generated images frequently miss the defining visual traits of the target category — evidence that a model can tell fine-grained categories apart without truly grounding their names into visual concepts."
+        },
+        {
+          "id": "f6",
+          "n": 6,
+          "title": "Alignment can erode fine-grained features",
+          "summary": "The visual-to-textual alignment strategy may impair fine-grained discriminability.",
+          "detail": "LLaVA's original visual features outperform their aligned counterparts by 3.39% on average for fine-grained classification — alignment to coarse-grained captions distorts the feature space. Crucially, alignment data should be task-aware: re-aligning on richer recaptioned text improves general understanding (+1.66 on POPE), whereas category-level fine-grained text strengthens fine-grained tasks (+2.55% on Stanford Dogs, +1.73% on Stanford Cars) by pulling visual features closer to their category embeddings."
+        },
+        {
+          "id": "f7",
+          "n": 7,
+          "title": "Knowledge bias rooted in data and the LLM base",
+          "summary": "Inconsistent per-category accuracy stems from training-data coverage and the underlying LLM.",
+          "detail": "LLaVA's true-false accuracy ranks reveal a clear long-tail: ~90% for some fine-grained categories, ~30% for others. Fine-tuning on an occurrence-balanced set restores consistently strong recognition, showing the bias comes from uneven knowledge coverage, not intrinsic category difficulty. Tracing occurrence frequency further shows these categories are almost absent from training data — the imbalance is largely inherited from the language-side priors of the underlying LLM."
+        }
+      ]
+    },
+    {
+      "id": "improve",
+      "numeral": "III",
+      "stage": "Improve",
+      "question": "Which training designs actually strengthen fine-grained ability?",
+      "title": "Training Designs That Help",
+      "accent": "emerald",
+      "summary": "Improving fine-grained LVLMs takes more than raw scale: the training objective, data quality, and a balanced SFT composition jointly determine whether fine-grained ability is gained without sacrificing general competence.",
+      "findings": [
+        {
+          "id": "f8",
+          "n": 8,
+          "title": "Contrastive training builds better features",
+          "summary": "The contrastive paradigm enhances fine-grained discriminability more than generative or reconstruction-based training.",
+          "detail": "Vision encoders trained contrastively (EVA-CLIP, InternVL, DINOv2) yield more discriminative fine-grained features than reconstruction-based (BEiT3) or generative (Qwen) ones, on both classification and retrieval across twelve datasets. Under multi-meta-category classification, EVA-CLIP degrades by only 1.96% versus the single-category setting, whereas Qwen and BEiT3 drop 4.16% and 7.41% — a gap echoed in their global feature distributions and patch-level correspondences."
+        },
+        {
+          "id": "f9",
+          "n": 9,
+          "title": "Scale alone is not enough",
+          "summary": "Scaling vision encoders or web data alone brings limited fine-grained gains.",
+          "detail": "Scaling DINOv2 from B to L improves average classification accuracy by only 0.6%, and L to G by a further 0.3%; InternVL-6B features do not surpass DINOv2-L. On the data side, EVA-CLIP (2B+ samples) does not beat DINOv2 (142M carefully curated samples) on fine-grained tasks. Without attention to objective design and data quality, enlarging the encoder or crawled web data offers little fine-grained benefit."
+        },
+        {
+          "id": "f10",
+          "n": 10,
+          "title": "Mix general and fine-grained data during SFT",
+          "summary": "Joint SFT gains fine-grained ability while preserving general capabilities.",
+          "detail": "Post-hoc fine-tuning on fine-grained data alone improves recognition but causes severe forgetting — AI2D drops 65.31 to 48.67, DocVQA 42.43 to 20.36. Mixing general and fine-grained data at a 1:1 ratio during SFT keeps general performance close to baseline (AI2D 65.02, POPE 87.6) while matching, or slightly exceeding, the fine-grained accuracy of the fine-grained-only model. Fine-grained supervision helps, but its placement and composition in SFT are decisive."
+        }
+      ]
+    },
+    {
+      "id": "stress",
+      "numeral": "IV",
+      "stage": "Stress-test",
+      "question": "Is fine-grained recognition robust under perturbation?",
+      "title": "Robustness Under Visual & Linguistic Perturbations",
+      "accent": "violet",
+      "summary": "Fine-grained recognition is fragile from both sides — degraded visual evidence and, more severely, misleading language priors that bias the model's final semantic decision.",
+      "findings": [
+        {
+          "id": "f11",
+          "n": 11,
+          "title": "Fine-grained features are especially fragile",
+          "summary": "Visual features are more susceptible to perturbation in fine-grained than in generic tasks.",
+          "detail": "Under white-box (PGD) image perturbation, EVA-CLIP classification accuracy on the fine-grained CUB-200-2011 collapses from 88.95% to 24.94%, while on the generic CIFAR-100 it declines more modestly from 93.05% to 50.76%; CoCa and DINOv2 show the same trend. Because fine-grained categories differ only by subtle cues, small representation shifts make them hard to separate. A ViT trained on curated ImageNet with cross-entropy stays far more robust — pointing to data quality and objective design as remedies."
+        },
+        {
+          "id": "f12",
+          "n": 12,
+          "title": "Language priors can override vision",
+          "summary": "Language-side perturbations override visual evidence more effectively than feature-side ones.",
+          "detail": "Visual corruptions (salt-and-pepper, Gaussian blur, background removal, color shift) degrade both features and answers, but misleading linguistic cues hurt far more. Appending a wrong hint (e.g., \"the bird seems to be a black-footed albatross\") drops Qwen2.5-VL on CUB from 74.04%/71.49% to 63.01%/28.69% — a 42.80% true-false drop; InternVL3 falls 20.94%. Since the output space is linguistic, language priors bias the decision rule directly rather than merely weakening evidence — and the effect is strongest on true-false questions, where there is no candidate set to fall back on."
+        }
+      ]
+    }
+  ]
+}
