@@ -28,10 +28,10 @@
 
 ## 🔔 News
 
-- **🔥 [2026-06-18]** An extended version of our paper is now on [arXiv](https://arxiv.org/abs/2606.19053).
-- **✨ [2026-06-01]** Major benchmark update — we added a new dataset, **[MTARSI](https://huggingface.co/datasets/amistele/MTARSI-fixed)**, and expanded the suite with additional experimental validation and analysis.
-- **🎉 [ICLR 2026]** Our paper has been **accepted to ICLR 2026**! The ICLR version is available on [arXiv](https://arxiv.org/abs/2504.14988).
-- **🚀 [2025-02-06]** We released our **FG-BMK** benchmark!
+- 🔥 (***new***) An extended version of our paper is now on [arXiv](https://arxiv.org/abs/2606.19053).
+- ✨ Major benchmark update — we added a new dataset, **[MTARSI](https://huggingface.co/datasets/amistele/MTARSI-fixed)**, and expanded the suite with additional experimental validation and analysis.
+- 🎉 Our paper has been **accepted to ICLR 2026**! The ICLR version is available on [arXiv](https://arxiv.org/abs/2504.14988).
+- 🚀 We released our **FG-BMK** benchmark!
 
 ## 📖 Introduction
 
