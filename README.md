@@ -12,7 +12,7 @@
 <a href="https://arxiv.org/abs/2504.14988">
   <img src="https://img.shields.io/badge/arXiv%20(ICLR)-2504.14988-b31b1b.svg?style=for-the-badge&logo=arxiv&logoColor=white" alt="arXiv ICLR version"/>
 </a>
-<a href="https://seu-vipgroup.github.io/FG-BMK/">
+<a href="https://fg-bmk.github.io/">
   <img src="https://img.shields.io/badge/Project-Page-0f6e63.svg?style=for-the-badge&logo=githubpages&logoColor=white" alt="Project Page"/>
 </a>
 <a href="https://github.com/SEU-VIPGroup/FG-BMK">
@@ -24,7 +24,7 @@
 ---
 
 > 📄 This repository contains the **data** and **evaluation code** for **FG-BMK**.
-> For an interactive leaderboard, dataset overview, and key findings, visit the **[project page](https://seu-vipgroup.github.io/FG-BMK/)**.
+> For an interactive leaderboard, dataset overview, and key findings, visit the **[project page](https://fg-bmk.github.io/)**.
 
 ## 🔔 News
 
