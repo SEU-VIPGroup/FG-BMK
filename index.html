@@ -306,6 +306,25 @@
     .ds-card.daily::before { background: var(--emerald); } .ds-card.daily i { color: var(--emerald); } .ds-card.daily .ds-tag { background: var(--emerald-soft); color: var(--emerald-deep); }
     @media (max-width: 820px) { .ds-grid { grid-template-columns: 1fr; } }
 
+    /* NEWS */
+    .news-list { list-style: none; max-width: 820px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; gap: 12px; position: relative; }
+    /* vertical timeline line linking the dots (top = newest) */
+    .news-list::before { content: ''; position: absolute; left: 26px; top: 24px; bottom: 24px; width: 2px; background: linear-gradient(var(--accent), var(--border) 85%); opacity: .55; }
+    .news-item { position: relative; display: flex; align-items: flex-start; gap: 16px; padding: 16px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--card-shadow); transition: transform .2s, box-shadow .2s; }
+    .news-item:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(40,33,20,.1); }
+    .news-dot { position: relative; z-index: 1; flex-shrink: 0; width: 11px; height: 11px; margin-top: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px var(--accent-soft); }
+    /* progressively fade older entries' dots so top reads as newest */
+    .news-item:nth-child(1) .news-dot { background: var(--accent); }
+    .news-item:nth-child(1) .news-dot::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 2px solid var(--accent); opacity: .4; animation: newsPulse 2.4s ease-out infinite; }
+    .news-item:nth-child(2) .news-dot { opacity: .8; }
+    .news-item:nth-child(3) .news-dot { opacity: .6; }
+    .news-item:nth-child(n+4) .news-dot { opacity: .42; }
+    @keyframes newsPulse { 0% { transform: scale(1); opacity: .5; } 70% { transform: scale(1.9); opacity: 0; } 100% { opacity: 0; } }
+    .news-text { font-size: 1rem; color: var(--text-2); line-height: 1.6; }
+    .news-text strong { color: var(--text); font-weight: 600; }
+    .news-text a { color: var(--accent-deep); border-bottom: 1.5px solid var(--accent-soft); transition: border-color .2s; }
+    .news-text a:hover { border-color: var(--accent); }
+
     /* BIBTEX */
     .bibtex-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--card-shadow); }
     .bibtex-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--bg-alt); border-bottom: 1px solid var(--border); }
@@ -341,6 +360,7 @@
       </div>
       <div class="nav-right">
         <ul class="nav-links">
+          <li><a href="#news">News</a></li>
           <li><a href="#abstract">Abstract</a></li>
           <li><a href="#leaderboard">Leaderboard</a></li>
           <li><a href="#dataset">Dataset</a></li>
@@ -379,7 +399,8 @@
         <span style="opacity:.7">&dagger; Corresponding Author</span>
       </p>
       <div class="hero-links">
-        <a href="https://arxiv.org/abs/2606.19053" target="_blank" class="hero-link hero-link--primary"><i class="ai ai-arxiv"></i> arXiv</a>
+        <a href="https://arxiv.org/abs/2606.19053" target="_blank" class="hero-link hero-link--primary"><i class="ai ai-arxiv"></i> arXiv (Extend)</a>
+        <a href="https://arxiv.org/abs/2504.14988" target="_blank" class="hero-link"><i class="ai ai-arxiv"></i> arXiv (ICLR)</a>
         <a href="https://github.com/SEU-VIPGroup/FG-BMK" target="_blank" class="hero-link"><i class="fab fa-github"></i> Code</a>
         <a href="#leaderboard" class="hero-link"><i class="fas fa-trophy"></i> Leaderboard</a>
         <a href="#dataset" class="hero-link"><i class="fas fa-database"></i> Dataset</a>
@@ -396,6 +417,33 @@
         <div class="stat"><div class="stat-num">13</div><div class="stat-label">Data Sources</div></div>
         <div class="stat"><div class="stat-num">5</div><div class="stat-label">Diagnostic Tasks</div></div>
       </div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section class="section" id="news" style="padding-bottom: 0;">
+    <div class="container reveal">
+      <div class="center-head">
+        <div class="kicker center">News</div>
+      </div>
+      <ul class="news-list" style="margin-top: 18px;">
+        <li class="news-item">
+          <span class="news-dot"></span>
+          <span class="news-text">An extended version of our paper is now on <a href="https://arxiv.org/abs/2606.19053" target="_blank">arXiv</a>.</span>
+        </li>
+        <li class="news-item">
+          <span class="news-dot"></span>
+          <span class="news-text">Major benchmark update — we added new dataset and expanded the suite with additional experimental validation and analysis.</span>
+        </li>
+        <li class="news-item">
+          <span class="news-dot"></span>
+          <span class="news-text">Our paper has been <strong>accepted to ICLR 2026</strong>! The ICLR version is available on <a href="https://arxiv.org/abs/2504.14988" target="_blank">arXiv</a>.</span>
+        </li>
+        <li class="news-item">
+          <span class="news-dot"></span>
+          <span class="news-text">We released our <strong>FG-BMK</strong> benchmark!</span>
+        </li>
+      </ul>
     </div>
   </section>
 
